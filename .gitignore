@@ -1,0 +1,30 @@
+# Python / packaging
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+.mcp.json
+.claude/
+.codex/
+
+# Tool output
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.playwright-mcp/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

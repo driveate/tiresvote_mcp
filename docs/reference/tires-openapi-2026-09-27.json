@@ -1,0 +1,3139 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Tires Catalog API",
+    "description": "Read-only JSON API for the TiresVote catalog: tire brands, tires, tire tests and top charts, and tire search.\n\nPublic base URL: `https://api.wheel-size.com/v2/tires/`\n\n**Authorization.** Every request must carry your `user_key` query parameter — use the **Authorize** button to apply it to requests sent from this page. The public API rejects requests without authentication with `403 Forbidden`.\n\n**Response format.** A successful response returns the requested payload in `data` and accompanying information in `meta` — for example `meta.count` for totals or `meta.pagination` for paginated lists.\n\n**Pagination.** Endpoints that show `page`/`per_page` parameters are paginated: `per_page` defaults to 10 and accepts at most 20 items.",
+    "termsOfService": "https://tiresvote.com/privacy-policy/",
+    "contact": {
+      "email": "info@wheel-size.com"
+    },
+    "version": "v2"
+  },
+  "host": "api.wheel-size.com",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/v2/tires",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "user_key": {
+      "type": "apiKey",
+      "name": "user_key",
+      "in": "query",
+      "description": "Your access token. [Get your API key](https://developer.wheel-size.com/signup?plan_ids%5B%5D=2357355811171)"
+    }
+  },
+  "security": [
+    {
+      "user_key": []
+    }
+  ],
+  "paths": {
+    "/articles/": {
+      "get": {
+        "operationId": "articles",
+        "summary": "Articles catalog",
+        "description": "\nGet the latest TiresVote.com articles.\n\nYou can use this data to build up articles catalog or a news block on your site.  \nPlease, be aware that we don't provide full articles data.\n\nCheck out [TiresVote.com Articles Catalog](https://tiresvote.com/articles/) as an example page.\n",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer",
+            "minimum": 1
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "maximum": 20,
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ArticleReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Articles"
+        ]
+      },
+      "parameters": []
+    },
+    "/catalog/": {
+      "get": {
+        "operationId": "brands",
+        "summary": "Tire brands catalog",
+        "description": "\nGet the list of tire brands with their product counts.\nWe divide the brands by their price segment into the **`Premium`**, **`Mid-Range`**, and **`Economy`** groups.\n\nUse the *`price_segment`* parameter to keep only the segments you need: it takes the segment slugs `premium`, `mid-range`, or `economy` and can be repeated for several segments at once.\n\n**Note:** This endpoint has been optimized for performance. \nBrand images and country information are no longer included in the response.\n\n**Response fields:**\n- **`slug`**: Brand identifier\n- **`display`**: Brand display name\n- **`price_segment`**: Price segment display name (`Premium`/`Mid-Range`/`Economy`) or `null` when the brand is not assigned to a segment\n- **`products_count`**: Number of products available\n\nCheck out [TiresVote.com Brands Catalog](https://tiresvote.com/catalog/) to get more visual representation.\n",
+        "parameters": [
+          {
+            "name": "price_segment",
+            "in": "query",
+            "description": "Brand price segment slug name (e.g. `premium`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "premium",
+                "mid-range",
+                "economy"
+              ]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/BrandsReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Catalog"
+        ]
+      },
+      "parameters": []
+    },
+    "/catalog/{brand}/": {
+      "get": {
+        "operationId": "products",
+        "summary": "Tires catalog for specific brand",
+        "description": "\nBrand's tires list.\n\nYou can filter out the tires by several most useful parameters to build up a brand catalog page.\n\nA single response returns up to 200 tires. **`meta.count`** reports the total number of matching tires, so it may exceed the number of returned items. To retrieve a long brand catalog in pages, use _**`GET /search/advanced/`**_ with the *`b`* parameter set to the brand slug — it accepts the filters described there and is paginated within its own limits.\n\nCheck out [TiresVote.com Brand Page](https://tiresvote.com/catalog/michelin/) for more visual representation.\n",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "path",
+            "description": "Brand slug name, use _**`GET /catalog/`**_ to get possible values (e.g. `michelin`)",
+            "required": true,
+            "type": "string",
+            "x-example": "michelin"
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "description": "Region slug name. Use _**`GET /regions/`**_ to get possible values (e.g. `north-america`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "americas",
+                "north-america",
+                "usdm",
+                "cdm",
+                "mxndm",
+                "ladm",
+                "eudm",
+                "russia",
+                "asia",
+                "east-asia",
+                "jdm",
+                "chdm",
+                "skdm",
+                "sam",
+                "medm",
+                "africa",
+                "nadm",
+                "sadm",
+                "audm"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "description": "Season slug name (e.g. `summer`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "summer",
+                "all",
+                "winter"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "automobile_type",
+            "in": "query",
+            "description": "Automobile type slug name (e.g. `car`)",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "car",
+              "suv"
+            ]
+          },
+          {
+            "name": "runflat",
+            "in": "query",
+            "description": "Show only runflat tires",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "show_discontinued",
+            "in": "query",
+            "description": "Include discontinued tires",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "show_oe",
+            "in": "query",
+            "description": "Include original equipment tires",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Comma-separated list without spaces. Supported field names: *`popularity`*, *`score`*, *`slug`*",
+            "required": false,
+            "type": "string",
+            "default": "-popularity,-score,slug",
+            "minLength": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProductsReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Catalog"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "brand",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/catalog/{brand}/{product}/": {
+      "get": {
+        "operationId": "product-info",
+        "summary": "General information for the tire",
+        "description": "\nExtended tire characteristics.\n\nReturns comprehensive information about a specific tire including:\n- Basic product details (name, brand, season, etc.)\n- Performance specifications and ratings\n- Regional availability and market presence\n- Model relations: predecessor, successors and run-flat versions\n- Related content counters (videos, benchmarks, etc.)\n\nUse _**`GET /catalog/{brand}/{product}/*/`**_ methods to get tire modifications list and third-party tire-related data.\n\nThe *`ancestor`* field provides information about product evolution,\nshowing which tire model this product replaced in the manufacturer's lineup;\nit is __*`null`*__ when the predecessor is missing or no longer listed.\nThe *`successors`* field lists the models that replaced this product,\nnewest first, and the *`runflat_models`* field lists its run-flat\nversions, sorted by name; both are empty arrays when the product has none.\n\nEach relation entry is an object with *`brand_slug`*,\n*`product_slug`* and *`display_name`* fields. Pass\n*`brand_slug`* and *`product_slug`* to\n_**`GET /catalog/{brand}/{product}/`**_ to fetch the related tire.\nOnly currently listed tires whose brands are also listed are included\nin these relations.\n\nThe *`performance_category`* and *`brand.price_segment`* fields\nare __*`null`*__ when the corresponding classification is not assigned.\n",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "path",
+            "description": "Brand slug name, use _**`GET /catalog/`**_ to get possible values (e.g. `michelin`)",
+            "required": true,
+            "type": "string",
+            "x-example": "michelin"
+          },
+          {
+            "name": "product",
+            "in": "path",
+            "description": "Product slug name, use _**`GET /catalog/{brand}/`**_ to get possible values (e.g. `pilot-sport-4s`)",
+            "required": true,
+            "type": "string",
+            "x-example": "pilot-sport-4s"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProductInfoReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Catalog"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "brand",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "product",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/catalog/{brand}/{product}/bnb/": {
+      "get": {
+        "operationId": "product-bnb",
+        "summary": "Reasons to buy or not to buy the tire",
+        "description": "\nWe examine real-life reviews from the main tire-selling sites and summarize key thoughts into a list of advantages and drawbacks.\nPeople can upvote each reason separately if they agree.\nThereby we have human-created and human-approved reasons to buy or not to buy a tire.\n\nEach reason contains the reason *`text`*, the number of *`upvotes`* and a *`prooflink`* to the TiresVote.com page with the real reviews it is based on.\n\nThe *`data`* field is __*`null`*__ when the tire has no approved reasons yet — check the *`has_bnb_reasons`* flag of _**`GET /catalog/{brand}/{product}/`**_ before requesting this endpoint.\n",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "path",
+            "description": "Brand slug name, use _**`GET /catalog/`**_ to get possible values (e.g. `michelin`)",
+            "required": true,
+            "type": "string",
+            "x-example": "michelin"
+          },
+          {
+            "name": "product",
+            "in": "path",
+            "description": "Product slug name, use _**`GET /catalog/{brand}/`**_ to get possible values (e.g. `pilot-sport-4s`)",
+            "required": true,
+            "type": "string",
+            "x-example": "pilot-sport-4s"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProductBuyNotBuyReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Catalog"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "brand",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "product",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/catalog/{brand}/{product}/modes/": {
+      "get": {
+        "operationId": "product-modes",
+        "summary": "Tire modifications",
+        "description": "\nGet the list of tire modifications currently being produced by the manufacturer.\nDiscontinued sizes are not included.\n\nThe set of dimension fields depends on the *`sizing_system`* value:\n`metric` and `lt-metric` modifications provide *`tire_width`*, *`aspect_ratio`* and *`rim_diameter`*, while `flotation` and `lt-numeric` modifications provide *`overall_diameter`*, *`section_width`* and *`rim_diameter`*.\n\nDimensions are given in millimeters for *`tire_width`*, percent for *`aspect_ratio`* and inches for *`rim_diameter`*, *`overall_diameter`* and *`section_width`*. Empty numeric values are returned as __*`null`*__.\n\nEvery modification also carries the *`text`* field — the size as written on the tire sidewall — along with load and speed indexes and feature flags.\n\nExample request (substitute real brand and product slugs from the catalog; the key is a placeholder):\n\n```http\nGET https://api.wheel-size.com/v2/tires/catalog/{brand}/{product}/modes/?user_key=YOUR_API_KEY\n```\n\nThe response wraps the modification list in a *`data`* array with *`meta.count`*. The excerpts below illustrate the data shape only — they do not show real size availability of any tire model.\n\nIllustrative response excerpt (remaining item fields omitted) — a `metric` item (`lt-metric` items share the same fields):\n\n```json\n{\n  \"data\": [\n    {\n      \"sizing_system\": \"metric\",\n      \"text\": \"205/55 R16 91V\",\n      \"tire_width\": 205,\n      \"aspect_ratio\": 55,\n      \"rim_diameter\": 16.0\n    }\n  ],\n  \"meta\": { \"count\": 1 }\n}\n```\n\nA `flotation` item of *`data`*:\n\n```json\n{\n  \"sizing_system\": \"flotation\",\n  \"text\": \"31x10.5 R15 LT\",\n  \"overall_diameter\": 31.0,\n  \"section_width\": 10.5,\n  \"rim_diameter\": 15.0\n}\n```\n\nAn `lt-numeric` item of *`data`* — unknown numeric values come as __*`null`*__:\n\n```json\n{\n  \"sizing_system\": \"lt-numeric\",\n  \"text\": \"10.5R15 LT\",\n  \"overall_diameter\": null,\n  \"section_width\": 10.5,\n  \"rim_diameter\": 15.0\n}\n```\n",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "path",
+            "description": "Brand slug name, use _**`GET /catalog/`**_ to get possible values (e.g. `michelin`)",
+            "required": true,
+            "type": "string",
+            "x-example": "michelin"
+          },
+          {
+            "name": "product",
+            "in": "path",
+            "description": "Product slug name, use _**`GET /catalog/{brand}/`**_ to get possible values (e.g. `pilot-sport-4s`)",
+            "required": true,
+            "type": "string",
+            "x-example": "pilot-sport-4s"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProductModesReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Catalog"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "brand",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "product",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/catalog/{brand}/{product}/materials/": {
+      "get": {
+        "operationId": "product-materials",
+        "summary": "Materials related to the tire",
+        "description": "\nGet the list of the tire-related materials sorted by the publication date.\nUse the *`type`* query parameter to get materials of a single type only.\n\nA material is one of 4 data types with different data structures: **`Article`**, **`Video`**, **`Link`**, and **`Benchmark`**.\n\nAll materials have *`type`* and *`publication_date`* data fields.\n\nSee _**`GET /articles/`**_ documentation for the full **`Article`** reference.\n\n**`Link`** stands for external link related to the tire with the following data fields:\n* *`url`* - external link\n* *`title`* - material title\n* *`website`* - domain name\n* *`text`* - caption text\n* *`thumbnail`* - thumbnail of the external page main image (can be __*`null`*__)\n\n**`Video`** is usually a YouTube video\n* *`video_url`* - youtube link\n* *`title`* - youtube title\n* *`thumbnail`* - youtube thumbnail (can be __*`null`*__)\n\n**`Benchmark`** is the tire's entry in a professional tire test or a top chart; its data structure is shown below as a response schema.\n",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "path",
+            "description": "Brand slug name, use _**`GET /catalog/`**_ to get possible values (e.g. `michelin`)",
+            "required": true,
+            "type": "string",
+            "x-example": "michelin"
+          },
+          {
+            "name": "product",
+            "in": "path",
+            "description": "Product slug name, use _**`GET /catalog/{brand}/`**_ to get possible values (e.g. `pilot-sport-4s`)",
+            "required": true,
+            "type": "string",
+            "x-example": "pilot-sport-4s"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "article",
+              "video",
+              "benchmark",
+              "link"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProductMaterialsReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Catalog"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "brand",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "product",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/search/": {
+      "get": {
+        "operationId": "search",
+        "summary": "Search for tires by query",
+        "description": "\nGet list of tires matching the search query.\n\nSearch process:\n* The _**`query`**_ parameter is split up by punctuation and spaces into the several chunks. \n* The chunks are matched against: `tire`, `brand`, `season`, `automobile type`, and `performance category`.\n* Each matching tire gets the search score.\n* The more chunks is matched by the tire, the better is the score.\n* Search results are sorted by the score (relevance).\n\nYou can check out your queries at [TiresVote.com query search](https://tiresvote.com/search/).\n\n**Note:** the API may serve only the first several result pages. The **`Paginator`** links for the remaining pages lead to _**`TiresVote.com`**_.\n",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Search query (e.g. `icecontact`)",
+            "required": true,
+            "type": "string",
+            "x-example": "icecontact"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer",
+            "minimum": 1
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Items per page (default: 10, max: 20)",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "maximum": 20,
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/QuerySearchReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Search"
+        ]
+      },
+      "parameters": []
+    },
+    "/search/advanced/": {
+      "get": {
+        "operationId": "advanced-search",
+        "summary": "Search for tires using advanced filters",
+        "description": "\nGet the list of tires matching advanced filters.\n\nThis is a simplified version of the [TiresVote.com Advanced Search](https://tiresvote.com/filter/).\nCheck it out for visual representation of the filters and the output list.   \n\nAll *`array`* parameters can have multiple values — repeat the parameter in the query string. For instance, `reg=north-america&reg=east-asia`. Multiple values of one parameter are combined with OR, while different parameters are combined with AND.\n\nParameters marked as &nbsp;&nbsp;__*`MODES`*__&nbsp;&nbsp; — *`tw`*, *`ar`*, *`rd`*, *`li`*, *`si`*, *`xl`*, *`ms`* — are tire modification search fields. They are applied together: a tire matches only when a single modification satisfies all of them at once. Use the *`t`* parameter to search for a specific tire modification size (for instance, `205/55R16`); it joins the same check, so the matching modification must satisfy it together with the fields above.\n\nTwo parameters are exceptions to that rule: *`nw`* carries the marker but filters tires by the model-level Nordic winter flag, and `rf=true` matches a tire when the model itself or any of its modifications is runflat.\n\nWhen the *`t`* parameter is used, every returned tire carries a **`has_modes`** dictionary that maps each requested *`t`* value to the list of its matching modification sizes, or `null` when none of them match.\n\n**Examples** — illustrative only; the sample values below are not a promise of catalog contents.\n\nFind `michelin` summer tires having a modification in size `205/55R16` or `225/45R17` — the two *`t`* values are combined with OR, while the brand and season filters are AND-ed with them:\n\n```http\nGET https://api.wheel-size.com/v2/tires/search/advanced/?user_key=YOUR_API_KEY&b=michelin&s=summer&t=205/55R16&t=225/45R17&page=1&per_page=10\n```\n\nResponse excerpt (partial — other product fields and pagination links are omitted):\n\n```json\n{\n  \"data\": [\n    {\n      \"slug\": \"sample-tire\",\n      \"display\": \"Sample Tire\",\n      \"brand\": { \"slug\": \"michelin\", \"display\": \"Michelin\", \"price_segment\": \"Premium\" },\n      \"season\": { \"slug\": \"summer\", \"display\": \"Summer\" },\n      \"has_modes\": {\n        \"205/55R16\": [\"205/55 R16 91V\"],\n        \"225/45R17\": null\n      }\n    }\n  ],\n  \"meta\": {\n    \"pagination\": {\n      \"current_page_count\": 1,\n      \"total_items\": 1,\n      \"total_pages\": 1\n    }\n  }\n}\n```\n\nA tire enters **`data`** when at least one requested size matches, so its **`has_modes`** may still report `null` for the other size.\n\nThe same-modification rule illustrated — a tire matches only when a single modification has width 205, aspect ratio 55, rim diameter 16, and load index 91 all at once:\n\n```http\nGET https://api.wheel-size.com/v2/tires/search/advanced/?user_key=YOUR_API_KEY&tw=205&ar=55&rd=16&li=91\n```\n\n**Note:** the API may serve only the first several result pages. The **`Paginator`** links for the remaining pages lead to _**`TiresVote.com`**_.\n",
+        "parameters": [
+          {
+            "name": "b",
+            "in": "query",
+            "description": "Brand slug name (e.g. `michelin`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "accelera",
+                "achilles",
+                "aderenza",
+                "advanta",
+                "alliance",
+                "altenzo",
+                "american-tourer",
+                "americus",
+                "antares",
+                "aplus",
+                "apollo",
+                "aptany",
+                "arivo",
+                "armstrong",
+                "arroyo",
+                "atlas",
+                "atturo",
+                "austone",
+                "autogreen",
+                "autogrip",
+                "avon",
+                "barum",
+                "berlin",
+                "bfgoodrich",
+                "blackstone",
+                "bridgestone",
+                "ceat",
+                "centennial",
+                "continental",
+                "cooper",
+                "cordiant",
+                "cosmo",
+                "cratos",
+                "crosswind",
+                "cst",
+                "davanti",
+                "dayton",
+                "dean",
+                "debica",
+                "deestone",
+                "delinte",
+                "delta",
+                "doublecoin",
+                "doublestar",
+                "dunlop",
+                "duraturn",
+                "durun",
+                "esa-tecar",
+                "event",
+                "evergreen",
+                "falken",
+                "farroad",
+                "federal",
+                "firemax",
+                "firestone",
+                "forceum",
+                "formula",
+                "fulda",
+                "fullway",
+                "fuzion",
+                "general",
+                "gislaved",
+                "giti",
+                "gladiator",
+                "goodride",
+                "goodtrip",
+                "goodyear",
+                "gripmax",
+                "gt-radial",
+                "hankook",
+                "hercules",
+                "hifly",
+                "imperial",
+                "infinity",
+                "insa-turbo",
+                "interstate",
+                "iris",
+                "ironman",
+                "jinyu",
+                "kelly",
+                "kenda",
+                "kinforest",
+                "kingboss",
+                "king-meiler",
+                "kleber",
+                "kontio",
+                "kormoran",
+                "kumho",
+                "landsail",
+                "lanvigator",
+                "lassa",
+                "laufenn",
+                "leao",
+                "lexani",
+                "linglong",
+                "lionhart",
+                "mabor",
+                "marshal",
+                "mastercraft",
+                "mastersteel",
+                "matador",
+                "maxtrek",
+                "maxxis",
+                "mazzini",
+                "membat",
+                "michelin",
+                "mickey-thompson",
+                "milestar",
+                "milestone",
+                "minerva",
+                "momo",
+                "mrf",
+                "multi-mile",
+                "nankang",
+                "neuton",
+                "nexen",
+                "nitto",
+                "nokian",
+                "norauto",
+                "novex",
+                "ohtsu",
+                "optimo",
+                "orium",
+                "otani",
+                "ovation",
+                "pace",
+                "pantera-tire",
+                "patriot",
+                "paxaro",
+                "petlas",
+                "pirelli",
+                "platin",
+                "point-s",
+                "prestivo",
+                "primewell",
+                "prinx",
+                "radar",
+                "rapid",
+                "riken",
+                "roadstone",
+                "rockblade",
+                "rotalla",
+                "royalblack",
+                "saffiro",
+                "sailun",
+                "sava",
+                "semperit",
+                "sentury",
+                "silverstone",
+                "sonar",
+                "starfire",
+                "star-performer",
+                "strial",
+                "sumitomo",
+                "sunfull",
+                "sunny",
+                "sunwide",
+                "superia",
+                "supermax",
+                "super-swamper",
+                "syron",
+                "taurus",
+                "thunderer",
+                "tigar",
+                "tomason",
+                "tomket",
+                "tourador",
+                "toyo",
+                "tracmax",
+                "travelstar",
+                "trazano",
+                "triangle",
+                "tristar",
+                "tyfoon",
+                "unigrip",
+                "uniroyal",
+                "venom-power",
+                "vercelli",
+                "viatti",
+                "viking",
+                "vogue",
+                "vredestein",
+                "waterfall",
+                "westlake",
+                "windforce",
+                "winrun",
+                "yartu",
+                "yokohama",
+                "zeetex",
+                "zenna",
+                "zeta",
+                "zmax"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "reg",
+            "in": "query",
+            "description": "Region slug name. Use _**`GET /regions/`**_ to get possible values (e.g. `north-america`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "americas",
+                "north-america",
+                "usdm",
+                "cdm",
+                "mxndm",
+                "ladm",
+                "eudm",
+                "russia",
+                "asia",
+                "east-asia",
+                "jdm",
+                "chdm",
+                "skdm",
+                "sam",
+                "medm",
+                "africa",
+                "nadm",
+                "sadm",
+                "audm"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "s",
+            "in": "query",
+            "description": "Season slug name (e.g. `summer`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "summer",
+                "all",
+                "winter"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "at",
+            "in": "query",
+            "description": "Automobile type slug name (e.g. `car`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "car",
+                "suv"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "pc",
+            "in": "query",
+            "description": "Performance category slug name. Use _**`GET /performance-categories/`**_ to get possible values (e.g. `car-high-performance-summer`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "car-passenger-all-season",
+                "car-standard-touring-all-season",
+                "car-grand-touring-all-season",
+                "car-performance-all-season",
+                "car-high-performance-all-season",
+                "car-ultra-high-performance-all-season",
+                "suv-crossoversuv-touring-all-season",
+                "suv-highway-all-season",
+                "suv-streetsport-truck-all-season",
+                "car-grand-touring-summer",
+                "car-high-performance-summer",
+                "car-ultra-high-performance-summer",
+                "car-max-performance-summer",
+                "car-extreme-performance-summer",
+                "suv-streetsport-truck-summer",
+                "suv-highway-rib-summer",
+                "car-studdable-winter-snow",
+                "car-studless-ice-snow",
+                "car-performance-winter-snow",
+                "suv-light-trucksuv-studless-ice-snow",
+                "suv-light-trucksuv-studdable-winter-snow",
+                "suv-light-trucksuv-performance-winter-snow",
+                "car-temporarycompact-spare",
+                "suv-on-off-road-all-terrain",
+                "suv-on-off-road-commercial-traction",
+                "suv-off-road-max-traction"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "ps",
+            "in": "query",
+            "description": "Brand Price Segment (e.g. `premium`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "premium",
+                "mid-range",
+                "economy"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "np",
+            "in": "query",
+            "description": "Include Discontinued Tires",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "rf",
+            "in": "query",
+            "description": "Include Runflat Tires",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "oe",
+            "in": "query",
+            "description": "Include OE Tires",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "y",
+            "in": "query",
+            "description": "Tire production start year (e.g. `2018`)",
+            "required": false,
+            "type": "array[integer]",
+            "maximum": 2028,
+            "minimum": 1900
+          },
+          {
+            "name": "xl",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Extra Load, XL",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "ms",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Mud and Snow, M+S",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "nw",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; For Nordic Winter",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "tw",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Tire width, mm (e.g. `205`)",
+            "required": false,
+            "type": "array[integer]",
+            "maximum": 525,
+            "minimum": 95
+          },
+          {
+            "name": "ar",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Tire Aspect Ratio, % (e.g. `55`)",
+            "required": false,
+            "type": "array[integer]",
+            "maximum": 95,
+            "minimum": 20
+          },
+          {
+            "name": "rd",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Rim diameter, in (e.g. `16`)",
+            "required": false,
+            "type": "array[integer]",
+            "maximum": 32,
+            "minimum": 10
+          },
+          {
+            "name": "si",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Speed Index (e.g. `T`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "A1",
+                "A2",
+                "A3",
+                "A4",
+                "A5",
+                "A6",
+                "A8",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "P",
+                "Q",
+                "R",
+                "S",
+                "T",
+                "U",
+                "H",
+                "V",
+                "W",
+                "Y",
+                "Z",
+                "ZR",
+                "(Y)"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "li",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Load Index (e.g. `102`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                78,
+                79,
+                80,
+                81,
+                82,
+                83,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                120,
+                121,
+                122,
+                123,
+                124,
+                125,
+                126,
+                127,
+                128,
+                129,
+                130,
+                131,
+                132,
+                133,
+                134,
+                135,
+                136,
+                137,
+                138,
+                139,
+                140,
+                141,
+                142,
+                143,
+                144,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "t",
+            "in": "query",
+            "description": "__*`MODES`*__&nbsp;&nbsp; Tire modification size (e.g. `205/55 R16 91Y`)",
+            "required": false,
+            "type": "array[string]",
+            "minLength": 1
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Comma-separated list without spaces. Supported field names: *`popularity`*, *`score`*, *`slug`*",
+            "required": false,
+            "type": "string",
+            "default": "-popularity,-score,slug",
+            "minLength": 1
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer",
+            "minimum": 1
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Items per page (default: 10, max: 20)",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "maximum": 20,
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AdvancedSearchReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Search"
+        ]
+      },
+      "parameters": []
+    },
+    "/regions/": {
+      "get": {
+        "operationId": "regions",
+        "summary": "Available regions",
+        "description": "\nList of TiresVote.com regions.\n\nSome tires are being sold in one geographical or economical area and aren't in another.\nA TiresVote.com **`Region`** stands for an economical area of sales.\nThe regions division is based on manufacturers' markets and our own experience. \n\nRetrieve this list if you want to use a *`region`* parameter for the _**`GET /search/advanced/`**_ or _**`GET /catalog/{brand}/`**_ API methods.\n",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RegionsReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Service Methods"
+        ]
+      },
+      "parameters": []
+    },
+    "/performance-categories/": {
+      "get": {
+        "operationId": "performance-categories",
+        "summary": "Available performance categories",
+        "description": "\nList of TiresVote.com performance categories.\n\nA **`Performance Category`** along with season and automobile type combines tires by road conditions and driving style.  \nCheck out [Performance Categories](https://tiresvote.com/catalog/performance/) for more information.\n\nRetrieve this performance categories list if you want to use *`pc`* parameter for the _**`GET /search/advanced/`**_ API method. \n",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PerformanceCategoriesReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Service Methods"
+        ]
+      },
+      "parameters": []
+    },
+    "/tests/": {
+      "get": {
+        "operationId": "tests",
+        "summary": "Professional tire tests and rankings",
+        "description": "\nTiresVote.com gathers **`Professional Tire Tests`** conducted by the most prominent tire-testing organizations and combines them into the tire tests catalog.\n\nThe list is paginated and can be filtered by *`year`*, *`season`* and *`automobile_type`*.\n\nCheck out [TiresVote.com Tire Tests Page](https://tiresvote.com/tests/) for more information.\n",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Benchmark release year (e.g. `2020`)\nYou can pass multiple values to the query string (e.g. `year=2020&year=2021`)",
+            "required": false,
+            "type": "array[integer]",
+            "maximum": 2028,
+            "minimum": 1900,
+            "x-example": 2020
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "description": "Season slug name (e.g. `summer`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "summer",
+                "all",
+                "winter"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "automobile_type",
+            "in": "query",
+            "description": "Automobile type slug name (e.g. `car`)",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "car",
+              "suv"
+            ]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer",
+            "minimum": 1
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "maximum": 20,
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/BenchmarksTestsReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Benchmarks"
+        ]
+      },
+      "parameters": []
+    },
+    "/tests/{slug}/": {
+      "get": {
+        "operationId": "test",
+        "summary": "Detailed information for the test",
+        "description": "\nExtended information about the benchmark.\n\nA **`Benchmark`** is a **`Professional Tire Test`** or a **`Top Chart`**.\n\nThey both have identical data structure although **`Professional Tire Tests`** usually have more detailed information.\nFor instance, a **`Professional Tire Test`** typically provides a *`tire_size`* used in the test and a list of advantages and drawbacks for each contesting tire.  \n\nThe *`items`* list contains the participating tires ordered by their *`place`* rank, which starts at 1.\n\nPass one or more *`has_mode`* query parameters (tire sizes like `215/55R16`) to check size availability for every participating tire: each value maps to the list of matching size texts in *`has_modes`* of the item product, or to __*`null`*__ when no matching active size is listed for that tire.\n",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Test slug name, use _**`GET /tests/`**_ to get possible values (e.g. `2021-adac-summer-tire-test-r16`)",
+            "required": true,
+            "type": "string",
+            "x-example": "2021-adac-summer-tire-test-r16"
+          },
+          {
+            "name": "has_mode",
+            "in": "query",
+            "description": "Check tire size availability for each product within the benchmark (e.g. `215/55R16`)\nYou can pass multiple values to the query string (e.g. `has_mode=215/55R16&has_mode=225/50R16`)\nCheck out *`BenchmarkItem.product.has_modes`* description inside the response schema for more information.",
+            "required": false,
+            "type": "array[string]",
+            "maxLength": 30,
+            "minLength": 1,
+            "x-example": "215/55R16"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/TestDetailReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Benchmarks"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/top-charts/": {
+      "get": {
+        "operationId": "top-charts",
+        "summary": "Third-party tire ratings, bestsellers and top lists",
+        "description": "\nTiresVote.com gathers third-party **`Top Charts`** (**`Bestsellers`**, **`Tire Ratings`**) from the most reputable tire-selling shops and combines them into the tire top-charts catalog.\n\nThe list is paginated and can be filtered by *`year`*, *`season`* and *`automobile_type`*.\n\nCheck out [TiresVote.com Third-Party Charts Page](https://tiresvote.com/charts/) for more information.\n",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Benchmark release year (e.g. `2020`)\nYou can pass multiple values to the query string (e.g. `year=2020&year=2021`)",
+            "required": false,
+            "type": "array[integer]",
+            "maximum": 2028,
+            "minimum": 1900,
+            "x-example": 2020
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "description": "Season slug name (e.g. `summer`)",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "summer",
+                "all",
+                "winter"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "automobile_type",
+            "in": "query",
+            "description": "Automobile type slug name (e.g. `car`)",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "car",
+              "suv"
+            ]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer",
+            "minimum": 1
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "maximum": 20,
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/BenchmarksChartsReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Benchmarks"
+        ]
+      },
+      "parameters": []
+    },
+    "/top-charts/{slug}/": {
+      "get": {
+        "operationId": "top-chart",
+        "summary": "Detailed information for the top-chart",
+        "description": "\nExtended information about the benchmark.\n\nA **`Benchmark`** is a **`Professional Tire Test`** or a **`Top Chart`**.\n\nThey both have identical data structure although **`Professional Tire Tests`** usually have more detailed information.\nFor instance, a **`Professional Tire Test`** typically provides a *`tire_size`* used in the test and a list of advantages and drawbacks for each contesting tire.  \n\nThe *`items`* list contains the participating tires ordered by their *`place`* rank, which starts at 1.\n\nPass one or more *`has_mode`* query parameters (tire sizes like `215/55R16`) to check size availability for every participating tire: each value maps to the list of matching size texts in *`has_modes`* of the item product, or to __*`null`*__ when no matching active size is listed for that tire.\n",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Chart slug name, use _**`GET /top-charts/`**_ to get possible values (e.g. `tirerackcom-best-in-ultra-high-performance-summer`)",
+            "required": true,
+            "type": "string",
+            "x-example": "tirerackcom-best-in-ultra-high-performance-summer"
+          },
+          {
+            "name": "has_mode",
+            "in": "query",
+            "description": "Check tire size availability for each product within the benchmark (e.g. `215/55R16`)\nYou can pass multiple values to the query string (e.g. `has_mode=215/55R16&has_mode=225/50R16`)\nCheck out *`BenchmarkItem.product.has_modes`* description inside the response schema for more information.",
+            "required": false,
+            "type": "array[string]",
+            "maxLength": 30,
+            "minLength": 1,
+            "x-example": "215/55R16"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ChartDetailReportOutput"
+            },
+            "examples": {}
+          }
+        },
+        "tags": [
+          "Benchmarks"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Article": {
+      "required": [
+        "title",
+        "tags_list",
+        "lead",
+        "publication_date"
+      ],
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "Article title",
+          "type": "string",
+          "minLength": 1
+        },
+        "tags_list": {
+          "description": "List of article tags (e.g. `2020, summer tires, r17`, can be __*`empty list`*__)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "x-nullable": true
+          }
+        },
+        "lead": {
+          "description": "Article lead paragraph",
+          "type": "string",
+          "minLength": 1
+        },
+        "image": {
+          "description": "Article thumbnail image",
+          "type": "string",
+          "readOnly": true,
+          "format": "uri"
+        },
+        "publication_date": {
+          "description": "Article publication date (e.g. `2021-03-20`)",
+          "type": "string",
+          "format": "date-time"
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com article page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        }
+      }
+    },
+    "Paginator": {
+      "required": [
+        "total_items",
+        "total_pages"
+      ],
+      "type": "object",
+      "properties": {
+        "current_page_count": {
+          "description": "Number of items on the current page",
+          "type": "integer",
+          "readOnly": true
+        },
+        "total_items": {
+          "description": "Total number of items",
+          "type": "integer"
+        },
+        "total_pages": {
+          "description": "Total number of pages",
+          "type": "integer"
+        },
+        "first": {
+          "description": "First page link (can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "prev": {
+          "description": "Previous page link (can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "next": {
+          "description": "Next page link (can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "last": {
+          "description": "Last page link (can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        }
+      }
+    },
+    "ArticlesMeta": {
+      "required": [
+        "pagination"
+      ],
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/Paginator"
+        }
+      }
+    },
+    "ArticleReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Article"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/ArticlesMeta"
+        }
+      }
+    },
+    "BrandsData": {
+      "required": [
+        "slug",
+        "display",
+        "products_count"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Brand slug name (e.g. `bridgestone`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Brand display name (e.g. `Bridgestone`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "price_segment": {
+          "description": "Brand price segment (e.g. `Premium`, can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "readOnly": true,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "products_count": {
+          "description": "Number of tires currently on sale (e.g. `39`)",
+          "type": "integer"
+        }
+      }
+    },
+    "BrandsMeta": {
+      "required": [
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "Number of brands",
+          "type": "integer"
+        }
+      }
+    },
+    "BrandsReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BrandsData"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/BrandsMeta"
+        }
+      }
+    },
+    "Brand": {
+      "required": [
+        "slug",
+        "display"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Brand slug name (e.g. `bridgestone`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Brand display name (e.g. `Bridgestone`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "price_segment": {
+          "description": "Brand price segment (e.g. `Premium`, can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "readOnly": true,
+          "minLength": 1,
+          "x-nullable": true
+        }
+      }
+    },
+    "Season": {
+      "required": [
+        "slug",
+        "display"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Season slug name (e.g. `summer`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Season display name (e.g. `Summer`)",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "AutomobileType": {
+      "required": [
+        "slug",
+        "display"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Automobile type slug name (e.g. `car`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Automobile type display name (e.g. `Passenger`)",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "Counters": {
+      "type": "object",
+      "properties": {
+        "modes": {
+          "description": "Number of tire modifications",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "Region": {
+      "required": [
+        "slug",
+        "display"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Region slug name (e.g. `north-america`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Region display name (e.g. `North America`)",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BrandsProductList": {
+      "required": [
+        "slug",
+        "display",
+        "brand",
+        "season",
+        "automobile_type",
+        "year",
+        "discontinued",
+        "almost_discontinued",
+        "coming_soon",
+        "is_runflat",
+        "counters",
+        "regions"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Tire slug name (e.g. `turanza-t005`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Tire display name (e.g. `Turanza T005`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "brand": {
+          "$ref": "#/definitions/Brand"
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com detailed tire page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "season": {
+          "$ref": "#/definitions/Season"
+        },
+        "automobile_type": {
+          "$ref": "#/definitions/AutomobileType"
+        },
+        "year": {
+          "description": "Production start year (e.g. `2015`)",
+          "type": "integer"
+        },
+        "discontinued": {
+          "description": "No longer in production",
+          "type": "boolean"
+        },
+        "almost_discontinued": {
+          "description": "Only several modes remain in production. Often for historical reasons (for instance, as original equipment for some cars).",
+          "type": "boolean"
+        },
+        "coming_soon": {
+          "description": "Start of production announced by the manufacturer to the nearest future",
+          "type": "boolean"
+        },
+        "is_runflat": {
+          "description": "Runflat tire. Includes all brand-related terms like MOE, SSR, etc. Find more information at [TiresVote.com Runflat Tires](https://tiresvote.com/catalog/runflat/).",
+          "type": "boolean"
+        },
+        "counters": {
+          "$ref": "#/definitions/Counters"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Region"
+          }
+        }
+      }
+    },
+    "ProductsMeta": {
+      "required": [
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "Number of tires currently on sale",
+          "type": "integer"
+        }
+      }
+    },
+    "ProductsReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BrandsProductList"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/ProductsMeta"
+        }
+      }
+    },
+    "PerformanceCategory": {
+      "description": "Performance category — null when the model has no performance class",
+      "required": [
+        "slug"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "ProductAncestor": {
+      "description": "Information about the tire this product replaced. Contains brand and product identifiers for the predecessor model. Useful for tracking tire evolution and replacement chains. Null when the tire has no predecessor or the predecessor is no longer listed. (can be __*`True`*__)",
+      "required": [
+        "brand_slug",
+        "product_slug",
+        "display_name"
+      ],
+      "type": "object",
+      "properties": {
+        "brand_slug": {
+          "description": "Ancestor brand slug name (e.g. `michelin`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "product_slug": {
+          "description": "Ancestor product slug name (e.g. `pilot-sport-3`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "description": "Ancestor product display name (e.g. `Pilot Sport 3`)",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "x-nullable": true
+    },
+    "ProductRelation": {
+      "description": "Tire models that replaced this product, newest first. Empty list when the tire has no active successor.",
+      "required": [
+        "brand_slug",
+        "product_slug",
+        "display_name"
+      ],
+      "type": "object",
+      "properties": {
+        "brand_slug": {
+          "description": "Related product brand slug (e.g. `michelin`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "product_slug": {
+          "description": "Related product slug (e.g. `pilot-sport-4`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "description": "Related product display name (e.g. `Pilot Sport 4`)",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ExtendedCounters": {
+      "required": [
+        "videos",
+        "benchmarks"
+      ],
+      "type": "object",
+      "properties": {
+        "modes": {
+          "description": "Number of tire modifications",
+          "type": "string",
+          "readOnly": true
+        },
+        "videos": {
+          "description": "Number of videos related to the tire",
+          "type": "integer"
+        },
+        "benchmarks": {
+          "description": "Number of benchmarks containing the tire",
+          "type": "integer"
+        }
+      }
+    },
+    "Tag": {
+      "description": "Green and red tags",
+      "required": [
+        "slug",
+        "display",
+        "connotation"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Tag slug name (e.g. `dry-performance`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Tag display name (e.g. `Dry Performance`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "connotation": {
+          "description": "One of the values corresponding to the green-to-red color gradation",
+          "type": "string",
+          "enum": [
+            "excellent",
+            "good",
+            "acceptable",
+            "bad",
+            "terrible"
+          ]
+        }
+      }
+    },
+    "Rating": {
+      "required": [
+        "score",
+        "popularity",
+        "tags"
+      ],
+      "type": "object",
+      "properties": {
+        "score": {
+          "description": "CoreScore value. Check out [Tiresvote.com Evaluation Metrics](https://tiresvote.com/score/) for more information (e.g. `83`)",
+          "type": "number"
+        },
+        "popularity": {
+          "description": "Popularity score. Check out [Tiresvote.com Evaluation Metrics](https://tiresvote.com/score/) for more information (e.g. `60`)",
+          "type": "number"
+        },
+        "tags": {
+          "description": "Green and red tags",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
+          }
+        }
+      }
+    },
+    "ProductInfo": {
+      "required": [
+        "slug",
+        "display",
+        "brand",
+        "season",
+        "automobile_type",
+        "performance_category",
+        "year",
+        "discontinued",
+        "almost_discontinued",
+        "coming_soon",
+        "is_runflat",
+        "studded",
+        "for_nordic_winter",
+        "is_oe_model",
+        "manufacturer_page_link",
+        "description",
+        "tags",
+        "ancestor",
+        "successors",
+        "runflat_models",
+        "counters",
+        "regions",
+        "rating"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Tire slug name (e.g. `turanza-t005`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Tire display name (e.g. `Turanza T005`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "brand": {
+          "$ref": "#/definitions/Brand"
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com detailed tire page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "season": {
+          "$ref": "#/definitions/Season"
+        },
+        "automobile_type": {
+          "$ref": "#/definitions/AutomobileType"
+        },
+        "performance_category": {
+          "$ref": "#/definitions/PerformanceCategory"
+        },
+        "year": {
+          "description": "Production start year (e.g. `2015`)",
+          "type": "integer"
+        },
+        "discontinued": {
+          "description": "No longer in production",
+          "type": "boolean"
+        },
+        "almost_discontinued": {
+          "description": "Only several modes remain in production. Often for historical reasons (for instance, as original equipment for some cars).",
+          "type": "boolean"
+        },
+        "coming_soon": {
+          "description": "Start of production announced by the manufacturer to the nearest future",
+          "type": "boolean"
+        },
+        "is_runflat": {
+          "description": "Runflat tire. Includes all brand-related terms like MOE, SSR, etc. Find more information at [TiresVote.com Runflat Tires](https://tiresvote.com/catalog/runflat/).",
+          "type": "boolean"
+        },
+        "studded": {
+          "description": "Studded tire",
+          "type": "boolean"
+        },
+        "for_nordic_winter": {
+          "description": "Designed for snowy and icy winter",
+          "type": "boolean"
+        },
+        "is_oe_model": {
+          "description": "Designed specifically as original equipment for some cars",
+          "type": "boolean"
+        },
+        "manufacturer_page_link": {
+          "description": "Tire information page on the manufacturer site",
+          "type": "string",
+          "format": "uri",
+          "minLength": 1
+        },
+        "description": {
+          "description": "Manufacturer description",
+          "type": "string",
+          "minLength": 1
+        },
+        "tags": {
+          "description": "Key features declared by the manufacturer (e.g. `Compact Vehicles, Safety`)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "x-nullable": true
+          }
+        },
+        "ancestor": {
+          "$ref": "#/definitions/ProductAncestor"
+        },
+        "successors": {
+          "description": "Tire models that replaced this product, newest first. Empty list when the tire has no active successor.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductRelation"
+          }
+        },
+        "runflat_models": {
+          "description": "Run-flat versions of this tire. Empty list when there are none.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductRelation"
+          }
+        },
+        "counters": {
+          "$ref": "#/definitions/ExtendedCounters"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Region"
+          }
+        },
+        "rating": {
+          "$ref": "#/definitions/Rating"
+        },
+        "has_bnb_reasons": {
+          "description": "Check this flag before you retrieve _**`GET /catalog/{brand}/{product}/bnb/`**_ to see if it makes sense.",
+          "type": "boolean",
+          "readOnly": true
+        },
+        "image": {
+          "description": "Tire image",
+          "type": "string",
+          "readOnly": true,
+          "format": "uri"
+        }
+      }
+    },
+    "ProductInfoMeta": {
+      "required": [
+        "last_update"
+      ],
+      "type": "object",
+      "properties": {
+        "last_update": {
+          "description": "Tire information latest update time",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ProductInfoReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ProductInfo"
+        },
+        "meta": {
+          "$ref": "#/definitions/ProductInfoMeta"
+        }
+      }
+    },
+    "BuyNotBuyItem": {
+      "required": [
+        "text"
+      ],
+      "type": "object",
+      "properties": {
+        "text": {
+          "description": "Reason text",
+          "type": "string",
+          "minLength": 1
+        },
+        "prooflink": {
+          "description": "Follow the link and check out real reviews stating the reason text",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "upvotes": {
+          "description": "Number of people upvoted the reason",
+          "type": "integer",
+          "readOnly": true
+        }
+      }
+    },
+    "ProductBuyNotBuyData": {
+      "type": "object",
+      "properties": {
+        "buy": {
+          "description": "Reasons to buy",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BuyNotBuyItem"
+          },
+          "readOnly": true
+        },
+        "not_buy": {
+          "description": "Reasons not to buy",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BuyNotBuyItem"
+          },
+          "readOnly": true
+        }
+      }
+    },
+    "ProductBuyNotBuyMeta": {
+      "type": "object",
+      "properties": {}
+    },
+    "ProductBuyNotBuyReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ProductBuyNotBuyData"
+        },
+        "meta": {
+          "$ref": "#/definitions/ProductBuyNotBuyMeta"
+        }
+      }
+    },
+    "MetricTire": {
+      "required": [
+        "sizing_system",
+        "load_index",
+        "dual_load_index",
+        "extra_load",
+        "mud_and_snow",
+        "rim_protection",
+        "tire_width",
+        "aspect_ratio",
+        "rim_diameter"
+      ],
+      "type": "object",
+      "properties": {
+        "sizing_system": {
+          "description": "Tire sizing system.\nFor `flotation` and `lt-numeric` systems \nuse *`overall_diameter`* and *`section_width`* instead of *`tire_width`* and *`aspect_ratio`* fields.",
+          "type": "string",
+          "enum": [
+            "metric",
+            "lt-metric",
+            "flotation",
+            "lt-numeric"
+          ]
+        },
+        "text": {
+          "description": "Size text (like the lettering on the tire sidewall) (e.g. `215/65 R16 102V XL`)",
+          "type": "string",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "load_index": {
+          "description": "Tire load index (e.g. `102`, can be __*`null`*__)",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "dual_load_index": {
+          "description": "Truck dual tire load index (e.g. `105`, can be __*`null`*__)",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "speed_index": {
+          "description": "Tire speed index (e.g. `V`, can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "readOnly": true,
+          "minLength": 1
+        },
+        "extra_load": {
+          "description": "Extra load tire, XL",
+          "type": "boolean"
+        },
+        "mud_and_snow": {
+          "description": "Mud & Snow tire, M+S",
+          "type": "boolean"
+        },
+        "rim_protection": {
+          "description": "Flange rim protection, FR",
+          "type": "boolean"
+        },
+        "tire_width": {
+          "description": "Tire width (e.g. `215`)",
+          "type": "integer"
+        },
+        "aspect_ratio": {
+          "description": "Tire aspect ratio (e.g. `65`)",
+          "type": "integer"
+        },
+        "rim_diameter": {
+          "description": "Rim diameter (e.g. `16`)",
+          "type": "number"
+        }
+      }
+    },
+    "ProductModesMeta": {
+      "required": [
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "Number of tire modifications",
+          "type": "integer"
+        }
+      }
+    },
+    "ProductModesReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MetricTire"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/ProductModesMeta"
+        }
+      }
+    },
+    "BaseBenchmarkItem": {
+      "required": [
+        "description",
+        "positive_tags",
+        "negative_tags"
+      ],
+      "type": "object",
+      "properties": {
+        "place": {
+          "description": "Product position in the benchmark list (e.g. `2`)",
+          "type": "integer",
+          "readOnly": true
+        },
+        "description": {
+          "description": "Short conclusion of the tire pros and cons",
+          "type": "string",
+          "minLength": 1
+        },
+        "positive_tags": {
+          "description": "List of the tire advantages (e.g. `Dry Handling, Rolling Resistance`, can be __*`empty list`*__)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "x-nullable": true
+          }
+        },
+        "negative_tags": {
+          "description": "List of the tire drawbacks (e.g. `Noise, Wet Braking`, can be __*`empty list`*__)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "x-nullable": true
+          }
+        }
+      }
+    },
+    "Benchmark Material": {
+      "required": [
+        "title",
+        "season",
+        "automobile_type",
+        "publication_date",
+        "product_rank"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Material type",
+          "type": "string",
+          "enum": [
+            "article",
+            "video",
+            "benchmark",
+            "link"
+          ],
+          "readOnly": true
+        },
+        "title": {
+          "description": "Benchmark title",
+          "type": "string",
+          "minLength": 1
+        },
+        "season": {
+          "$ref": "#/definitions/Season"
+        },
+        "automobile_type": {
+          "$ref": "#/definitions/AutomobileType"
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com detailed benchmark page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "publication_date": {
+          "description": "Material publication date (e.g. `2020-08-27`)",
+          "type": "string",
+          "format": "date-time"
+        },
+        "product_rank": {
+          "$ref": "#/definitions/BaseBenchmarkItem"
+        }
+      }
+    },
+    "ProductMaterialsMeta": {
+      "required": [
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "Number of product materials",
+          "type": "integer"
+        }
+      }
+    },
+    "ProductMaterialsReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Benchmark Material"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/ProductMaterialsMeta"
+        }
+      }
+    },
+    "SearchItemProduct": {
+      "required": [
+        "slug",
+        "display",
+        "brand",
+        "season",
+        "automobile_type",
+        "year",
+        "discontinued",
+        "almost_discontinued",
+        "coming_soon",
+        "is_runflat",
+        "counters",
+        "regions",
+        "rating"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Tire slug name (e.g. `turanza-t005`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Tire display name (e.g. `Turanza T005`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "brand": {
+          "$ref": "#/definitions/Brand"
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com detailed tire page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "season": {
+          "$ref": "#/definitions/Season"
+        },
+        "automobile_type": {
+          "$ref": "#/definitions/AutomobileType"
+        },
+        "year": {
+          "description": "Production start year (e.g. `2015`)",
+          "type": "integer"
+        },
+        "discontinued": {
+          "description": "No longer in production",
+          "type": "boolean"
+        },
+        "almost_discontinued": {
+          "description": "Only several modes remain in production. Often for historical reasons (for instance, as original equipment for some cars).",
+          "type": "boolean"
+        },
+        "coming_soon": {
+          "description": "Start of production announced by the manufacturer to the nearest future",
+          "type": "boolean"
+        },
+        "is_runflat": {
+          "description": "Runflat tire. Includes all brand-related terms like MOE, SSR, etc. Find more information at [TiresVote.com Runflat Tires](https://tiresvote.com/catalog/runflat/).",
+          "type": "boolean"
+        },
+        "counters": {
+          "$ref": "#/definitions/ExtendedCounters"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Region"
+          }
+        },
+        "has_modes": {
+          "description": "For each *`has_mode`* query parameter this dictionary shows whether the tire has such modification size or not (e.g. `{ \"205/60R16\": [\"205/60 R16 92H\", \"205/60 R16 92V\"], \"225/55R16\": null }`)",
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "readOnly": true
+        },
+        "rating": {
+          "$ref": "#/definitions/Rating"
+        }
+      }
+    },
+    "SearchMeta": {
+      "required": [
+        "pagination"
+      ],
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/Paginator"
+        }
+      }
+    },
+    "QuerySearchReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SearchItemProduct"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/SearchMeta"
+        }
+      }
+    },
+    "AdvancedSearchReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SearchItemProduct"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/SearchMeta"
+        }
+      }
+    },
+    "RegionsData": {
+      "required": [
+        "slug",
+        "display",
+        "tree_level"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Region slug name (e.g. `north-america`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Region display name (e.g. `North America`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "tree_level": {
+          "description": "Regions tree indentation level",
+          "type": "integer"
+        },
+        "countries": {
+          "description": "List of all region countries",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "readOnly": true
+        }
+      }
+    },
+    "RegionsMeta": {
+      "required": [
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "Total number of regions",
+          "type": "integer"
+        }
+      }
+    },
+    "RegionsReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RegionsData"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/RegionsMeta"
+        }
+      }
+    },
+    "PerformanceCategoryDetail": {
+      "required": [
+        "slug",
+        "display",
+        "season",
+        "automobile_type",
+        "road_conditions",
+        "tags",
+        "description"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Performance category slug name (e.g. `car-high-performance-summer`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Perfomance category display name (e.g. `High Performance Summer`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "season": {
+          "$ref": "#/definitions/Season"
+        },
+        "automobile_type": {
+          "$ref": "#/definitions/AutomobileType"
+        },
+        "road_conditions": {
+          "description": "Mark tires designed for special road conditions (e.g. `Off-Road`, can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "tags": {
+          "description": "Performance category key features list",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "x-nullable": true
+          }
+        },
+        "description": {
+          "description": "A brief description of the key features and the main category purpose",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "PerformanceCategoriesMeta": {
+      "required": [
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "count": {
+          "description": "Performance categories total number",
+          "type": "integer"
+        }
+      }
+    },
+    "PerformanceCategoriesReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PerformanceCategoryDetail"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/PerformanceCategoriesMeta"
+        }
+      }
+    },
+    "BenchmarksListData": {
+      "required": [
+        "slug",
+        "title",
+        "year",
+        "season",
+        "automobile_type",
+        "tire_size",
+        "publication_date",
+        "regions"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Benchmark slug name (e.g. `2021-adac-summer-tire-test-r16`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "title": {
+          "description": "Benchmark title (e.g. `ADAC: Summer Tire Test R16`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com detailed benchmark page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "year": {
+          "description": "Benchmark release year (e.g. `2020`)",
+          "type": "integer"
+        },
+        "season": {
+          "$ref": "#/definitions/Season"
+        },
+        "automobile_type": {
+          "$ref": "#/definitions/AutomobileType"
+        },
+        "image": {
+          "description": "Benchmark banner image (can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "readOnly": true,
+          "format": "uri"
+        },
+        "tire_size": {
+          "description": "All benchmark tires had this tire size during comparison (e.g. `205/55R16`, can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "publication_date": {
+          "description": "Benchmark publication date (e.g. `2020-08-27`)",
+          "type": "string",
+          "format": "date-time"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Region"
+          }
+        }
+      }
+    },
+    "BenchmarksListMeta": {
+      "required": [
+        "pagination"
+      ],
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/Paginator"
+        }
+      }
+    },
+    "BenchmarksTestsReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BenchmarksListData"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/BenchmarksListMeta"
+        }
+      }
+    },
+    "BenchmarkItemProduct": {
+      "required": [
+        "slug",
+        "display",
+        "brand",
+        "year",
+        "regions",
+        "studded",
+        "for_nordic_winter",
+        "manufacturer_page_link",
+        "rating"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Tire slug name (e.g. `turanza-t005`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "display": {
+          "description": "Tire display name (e.g. `Turanza T005`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "brand": {
+          "$ref": "#/definitions/Brand"
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com detailed tire page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "has_modes": {
+          "description": "For each *`has_mode`* query parameter this dictionary shows whether the tire has such modification size or not (e.g. `{ \"205/60R16\": [\"205/60 R16 92H\", \"205/60 R16 92V\"], \"225/55R16\": null }`)",
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "readOnly": true
+        },
+        "year": {
+          "description": "Production start year (e.g. `2015`)",
+          "type": "integer"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Region"
+          }
+        },
+        "studded": {
+          "description": "Studded tire",
+          "type": "boolean"
+        },
+        "for_nordic_winter": {
+          "description": "Designed for snowy and icy winter",
+          "type": "boolean"
+        },
+        "image": {
+          "description": "Tire image",
+          "type": "string",
+          "readOnly": true,
+          "format": "uri"
+        },
+        "manufacturer_page_link": {
+          "description": "Tire information page on the manufacturer site",
+          "type": "string",
+          "format": "uri",
+          "minLength": 1
+        },
+        "rating": {
+          "$ref": "#/definitions/Rating"
+        }
+      }
+    },
+    "BenchmarkItem": {
+      "required": [
+        "description",
+        "positive_tags",
+        "negative_tags",
+        "test_score",
+        "recommend",
+        "product"
+      ],
+      "type": "object",
+      "properties": {
+        "place": {
+          "description": "Product position in the benchmark list (e.g. `2`)",
+          "type": "integer",
+          "readOnly": true
+        },
+        "description": {
+          "description": "Short conclusion of the tire pros and cons",
+          "type": "string",
+          "minLength": 1
+        },
+        "positive_tags": {
+          "description": "List of the tire advantages (e.g. `Dry Handling, Rolling Resistance`, can be __*`empty list`*__)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "x-nullable": true
+          }
+        },
+        "negative_tags": {
+          "description": "List of the tire drawbacks (e.g. `Noise, Wet Braking`, can be __*`empty list`*__)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "x-nullable": true
+          }
+        },
+        "test_score": {
+          "description": "The tire test score",
+          "type": "number"
+        },
+        "recommend": {
+          "description": "Shows whether this tire recommended by the test",
+          "type": "boolean"
+        },
+        "product": {
+          "$ref": "#/definitions/BenchmarkItemProduct"
+        }
+      }
+    },
+    "BenchmarkDetailData": {
+      "required": [
+        "slug",
+        "title",
+        "year",
+        "season",
+        "automobile_type",
+        "tire_size",
+        "publication_date",
+        "regions",
+        "items"
+      ],
+      "type": "object",
+      "properties": {
+        "slug": {
+          "description": "Benchmark slug name (e.g. `2021-adac-summer-tire-test-r16`)",
+          "type": "string",
+          "format": "slug",
+          "pattern": "^[-a-zA-Z0-9_]+$",
+          "minLength": 1
+        },
+        "title": {
+          "description": "Benchmark title (e.g. `ADAC: Summer Tire Test R16`)",
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_link": {
+          "description": "Link to the _**`TiresVote.com detailed benchmark page`**_",
+          "type": "string",
+          "format": "uri",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "year": {
+          "description": "Benchmark release year (e.g. `2020`)",
+          "type": "integer"
+        },
+        "season": {
+          "$ref": "#/definitions/Season"
+        },
+        "automobile_type": {
+          "$ref": "#/definitions/AutomobileType"
+        },
+        "image": {
+          "description": "Benchmark banner image (can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "readOnly": true,
+          "format": "uri"
+        },
+        "tire_size": {
+          "description": "All benchmark tires had this tire size during comparison (e.g. `205/55R16`, can be __*`null`*__)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "publication_date": {
+          "description": "Benchmark publication date (e.g. `2020-08-27`)",
+          "type": "string",
+          "format": "date-time"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Region"
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BenchmarkItem"
+          }
+        }
+      }
+    },
+    "BenchmarkDetailMeta": {
+      "type": "object",
+      "properties": {}
+    },
+    "TestDetailReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/BenchmarkDetailData"
+        },
+        "meta": {
+          "$ref": "#/definitions/BenchmarkDetailMeta"
+        }
+      }
+    },
+    "BenchmarksChartsReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BenchmarksListData"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/BenchmarksListMeta"
+        }
+      }
+    },
+    "ChartDetailReportOutput": {
+      "required": [
+        "data",
+        "meta"
+      ],
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/BenchmarkDetailData"
+        },
+        "meta": {
+          "$ref": "#/definitions/BenchmarkDetailMeta"
+        }
+      }
+    }
+  }
+}
