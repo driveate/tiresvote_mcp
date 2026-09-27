@@ -54,7 +54,7 @@ MCP `limit/offset`. Ответ: slug, display, price_segment, products_count.
 | `regions` | `region` | `list[str]`, рынки TiresVote |
 | `seasons` | `season` | `list[str]`: summer, all, winter |
 | `automobile_type` | `automobile_type` | car или suv |
-| `runflat` | `runflat` | bool; true = только RunFlat по сериализатору каталога бренда |
+| `runflat` | `runflat` | bool; true = только RunFlat по сериализатору каталога бренда и описанию снимка |
 | `include_discontinued` | `show_discontinued` | bool; true включает снятые модели |
 | `include_oe` | `show_oe` | bool; true включает OE-модели |
 | `ordering` | `ordering` | Общая сортировка |
@@ -84,7 +84,9 @@ XL, M+S и защиту обода. Дробные диаметры допуст
 
 ## `tires_search`
 
-`query: str` обязателен, максимум 100 символов; API `page/per_page`.
+`query: str` обязателен, максимум 100 символов (`QuerySearchFilterSerializer` в
+`src/apps/api/v2/search/serializers.py` репозитория TiresVote; в снимке Swagger
+`maxLength` потерян); API `page/per_page`.
 Поиск используется для разрешения названия в `brand` + `product`, включая случаи
 нескольких похожих моделей. Ответ содержит компактные карточки, рейтинг и ссылки.
 
@@ -100,23 +102,29 @@ XL, M+S и защиту обода. Дробные диаметры допуст
 | `automobile_types` | `at` | `list[str]`: car, suv |
 | `performance_categories` | `pc` | `list[str]` из справочника |
 | `price_segments` | `ps` | `list[str]`, сегмент бренда |
-| `production_years` | `y` | `list[int]`, 1900…текущий год+2 |
+| `production_years` | `y` | `list[int]`, 1900…текущий год+2 (в снимке 2028) |
 | `tire_widths` | `tw` | `list[int]`, 95–525 мм |
 | `aspect_ratios` | `ar` | `list[int]`, 20–95 |
 | `rim_diameters` | `rd` | `list[int]`, 10–32 дюйма |
 | `speed_indices` | `si` | `list[str]`, точные значения |
 | `load_indices` | `li` | `list[int]`, 0–150, точные значения, не нижняя граница |
 | `sizes` | `t` | `list[str]`, например `225/45R17`; исходная нотация |
-| `include_discontinued` | `np` | bool; true включает снятые модели |
-| `include_runflat` | `rf` | bool; true включает RunFlat, не означает «только RunFlat» |
-| `include_oe` | `oe` | bool; true включает OE-модели |
+| `include_discontinued` | `np` | bool; по коду true включает снятые модели; в снимке не описано |
+| `include_runflat` | `rf` | bool; имя предварительное — источники расходятся, см. ниже |
+| `include_oe` | `oe` | bool; по коду true включает OE-модели; в снимке не описано |
 | `extra_load` | `xl` | bool, свойство исполнения |
 | `mud_and_snow` | `ms` | bool, свойство исполнения |
 | `nordic_winter` | `nw` | bool, свойство модели |
 
-Семантика include-флагов проверена по backend MappedBooleanField: true → `all`.
-Она отличается от `runflat` каталога бренда. Перед публикацией проверить живым
-контрактным случаем; не обещать отсутствующий upstream-фильтр «только RunFlat».
+По `rf` источники явно расходятся: backend даёт включающий флаг (true → `all`),
+а снимок Swagger описывает `rf=true` как отбор только runflat-моделей. У `np` и
+`oe` описания в снимке нет вообще: их include-семантика опирается только на код
+и остаётся неподтверждённой вторым источником, а не опровергнутой.
+Конфликт, пробел подтверждения и методика обязательной live-проверки описаны в
+[API knowledge](api-knowledge.md). До проверки имена `include_*`, их описания и
+соответствующие строки этой таблицы считать предварительными и не объявлять ни
+одно поведение подтверждённым. В любом случае это не тот же параметр, что `runflat`
+каталога бренда (true → `T`, только runflat).
 
 Список `sizes` ищет альтернативы (OR), а не обязательное наличие всех размеров.
 Для комплекта разных размеров подтвердить каждый размер у выбранной модели.
@@ -155,7 +163,8 @@ Upstream не имеет фильтра списка по размеру, бре
 
 ## `tires_get_test`
 
-Обязателен `slug`; `sizes: list[str] | None` → `has_mode`.
+Обязателен `slug`; `sizes: list[str] | None` → `has_mode`, каждое значение не длиннее
+30 символов (`BenchmarkDetailFilterSerializer`; то же `maxLength` есть в снимке).
 MCP `limit/offset` ограничивают только участников, сохраняя общие сведения теста.
 Участник: место, test_score, recommend, вывод, плюсы/минусы и идентичность модели.
 `has_mode` проверяет наличие запрошенного размера у участников; это не фильтр

@@ -71,7 +71,7 @@ Optional checkouts относительно корня этого репозит
 | Product list | slug, display, brand, canonical_link, season, automobile_type, year, discontinued, almost_discontinued, coming_soon, is_runflat, counters, regions |
 | Search row | Product list + has_modes, rating, counters.modes/videos/benchmarks |
 | Product detail | Идентичность + performance_category, studded, for_nordic_winter, is_oe_model, manufacturer_page_link, description, tags, ancestor, successors, runflat_models, rating, has_bnb_reasons, image; meta.last_update |
-| BNB | data = null либо `{buy: [...], not_buy: [...]}`; аргумент `{text, prooflink, upvotes}` |
+| BNB | data = null либо `{buy: [...], not_buy: [...]}` (null описан в снимке, хотя сама schema не помечает `data` nullable); аргумент `{text, prooflink, upvotes}` |
 | Variant | sizing_system, text, load_index, dual_load_index, speed_index, extra_load, mud_and_snow, rim_protection и геометрия |
 | Material | type, publication_date и поля конкретного вида материала |
 | Test list | slug, title, canonical_link, year, season, automobile_type, tire_size, publication_date, regions, image |
@@ -124,7 +124,9 @@ BNB сохранить доступ к обеим сторонам buy/not_buy. 
 - Предлагаемый envelope: results, total, available_count, limit, offset,
   has_more, next_offset (если есть), truncated. `total` отражает upstream total,
   если он дан, `available_count` — размер доступного upstream-набора.
-- Каталог бренда отдаёт максимум 200, хотя meta.count может быть больше.
+- Каталог бренда отдаёт максимум 200, хотя meta.count может быть больше; это
+  зафиксировано и в коде `catalog/reports.py`, и в описании endpoint в снимке,
+  который для длинных каталогов рекомендует `search/advanced/?b=<brand>`.
   `truncated` отмечает именно потерю части upstream-набора; обычная локальная
   страница с продолжением описывается has_more.
 - У теста сохранять общие сведения отдельно от пагинируемых items.
@@ -156,17 +158,38 @@ Fixtures использовать синтетические либо обезл
   Исправлять форму MCP JSON Schema, а не генерировать её слепо.
 - `has_modes` ошибочно описан схемой как dict boolean; код и пример показывают
   dict размера → list[str] либо null. Не приводить список к boolean.
-- Backend `np/rf/oe` advanced search — include-флаги: true → `all`, default → `F`.
-  Brand `runflat` имеет другую семантику: true → `T`, default → `all`.
-  Сохранить отличия; отсутствие параметра не означает универсально «любой».
-- Размерные условия и `t` объединяются в одном SearchMode EXISTS. Некоторые старые
-  описания говорят об отдельных исполнениях — они не описывают текущий backend.
+- Конфликт schema vs backend по `rf` в advanced search. Backend checkout
+  `9a461a0ffaa9ff597babb5ddb9a3f25f8cad41ac`: `RunflatField` в
+  `products/facet_search/index_manager.py` задаёт mapped-boolean
+  `{True: 'all', default: 'F'}`, а `product_search/catalogue.py` применяет фильтр
+  только в ветке `key == 'rf' and 'all' not in values`, то есть true → `all`
+  снимает ограничение (include-семантика). Снимок Swagger описывает этот же
+  параметр иначе: «`rf=true` matches a tire when the model itself or any of its
+  modifications is runflat», то есть как сужение до runflat. Явное расхождение
+  двух источников установлено именно для `rf`.
+  Ни одно из двух толкований не проверено на production. Обязательна live-проверка
+  до финализации семантики, имени и описания параметра (см. раздел ниже).
+  Brand `runflat` имеет третью mapping: true → `T`, default → `all`, то есть при
+  true это именно «только runflat». Сохранить отличия; отсутствие параметра не
+  означает универсально «любой».
+- `np` и `oe` в том же backend-checkout устроены как `rf`, но описания их семантики
+  в снимке Swagger нет. Для них это пробел подтверждения, а не доказанный
+  конфликт: второго источника для сравнения нет. Не переносить на них вывод
+  по `rf` ни в одну, ни в другую сторону.
+- Размерные условия и `t` объединяются в одном SearchMode EXISTS; то же правило
+  описано в снимке для полей MODES (`tw`, `ar`, `rd`, `li`, `si`, `xl`, `ms`) и
+  `t`. Некоторые старые описания говорят об отдельных исполнениях — они не
+  описывают текущий backend.
   Несколько значений `t` при этом — альтернативы, не обязательный комплект.
-- `nw` — свойство модели. `li`/`si` — точные значения, не minimum thresholds.
+- `nw` — свойство модели; снимок отмечает его тем же исключением из правила
+  MODES. `li`/`si` — точные значения из enum снимка (`li` 0–150, `si` — буквенные
+  индексы), не minimum thresholds.
 - Целые входные rd в advanced search и дробный rim_diameter в вариантах не конфликтуют:
   это разные контракты. Для строковых размеров сохранять исходную нотацию.
 - Счётчик modes в некоторых backend-проекциях имеет fallback 50. Он полезен как
   подсказка, но наличие и точный состав вариантов проверяются через sizes.
+  В снимке `Counters.modes` объявлен строкой: не полагаться на числовой тип без
+  явного приведения.
 - `has_mode` в деталях теста аннотирует наличие размеров у каждого участника,
   а не меняет размер испытания и не фильтрует весь тест по наличию.
 - Пустой BNB, null ancestor/category, пустые successors/runflat_models — обычные
@@ -179,6 +202,33 @@ Fixtures использовать синтетические либо обезл
 Live-проверки: точные DRF-тела ошибок, invalid-key/rate-limit gateway,
 null BNB, реальные connotation, большой бренд, HTML-граница поиска, mapped booleans
 и сочетания размерных условий. Подтверждение владельцем общего ключа уже получено.
+
+Обязательная проверка `rf` перед финализацией контракта. Сравнение «ответ с
+`rf=true` — подмножество ответа без параметра» некорректно: default может сам
+исключать runflat, а состав первой страницы зависит от сортировки и пагинации.
+Проверять на заранее известных моделях:
+
+1. Выбрать узкий срез (например один бренд плюс сезон), в котором по каталогу
+   заранее известны и RunFlat-, и обычные модели. Для обычных контрольных моделей
+   проверить отсутствие RunFlat также у исполнений: снимок допускает совпадение
+   по модели или исполнению, поэтому одного `is_runflat=false` недостаточно.
+   Записать slug контрольных моделей обеих групп до проверки.
+2. Выполнить тот же срез без `rf`, с `rf=true` и с `rf=false`, зафиксировав для
+   каждого запуска полный набор параметров (включая `ordering`, `page`,
+   `per_page`), полученные slug и `meta.pagination`.
+3. Вывод делать по контрольным идентификаторам, а не по размерам выдачи:
+   сохраняются ли при `rf=true` известные обычные модели (включающий флаг)
+   или выдача ограничена RunFlat-моделями (семантика снимка).
+4. Наличие контрольной модели доказывается её slug в ответе. Отсутствие можно
+   утверждать только после просмотра всех страниц соответствующего среза,
+   если выдача не усечена лимитом API. Неполная выборка не доказывает исключение
+   модели фильтром: тогда результат записывается как непроверенный, а срез
+   сужается. Лимиты пагинации обходить нельзя.
+
+До этой проверки ни одно поведение не объявлять подтверждённым, а имя и описание
+MCP-параметра считать предварительными. Такую же процедуру провести для `np`
+(контрольные модели по `discontinued`) и `oe` (по `is_oe_model`): у них нет
+второго описания, и поведение подтверждается только живым ответом.
 
 Tires ToS: публичная [страница API terms](https://developer.wheel-size.com/api-tos)
 явно описывает Fitment/Configurator; Swagger Tires ссылается на privacy policy.
