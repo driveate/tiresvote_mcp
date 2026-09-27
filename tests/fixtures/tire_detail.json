@@ -1,0 +1,125 @@
+{
+ "data": {
+  "slug": "pilot-sport-4",
+  "display": "Pilot Sport 4",
+  "brand": {
+   "slug": "michelin",
+   "display": "Michelin",
+   "price_segment": "Premium"
+  },
+  "canonical_link": "https://tiresvote.com/catalog/michelin/pilot-sport-4/",
+  "season": {
+   "slug": "summer",
+   "display": "Summer"
+  },
+  "automobile_type": {
+   "slug": "car",
+   "display": "Passenger"
+  },
+  "performance_category": {
+   "slug": "car-max-performance-summer",
+   "display": "Max Performance Summer"
+  },
+  "year": 2015,
+  "discontinued": false,
+  "almost_discontinued": false,
+  "coming_soon": false,
+  "is_runflat": false,
+  "studded": false,
+  "for_nordic_winter": false,
+  "is_oe_model": false,
+  "manufacturer_page_link": "https://www.michelinman.com/auto/tires/michelin-pilot-sport-4",
+  "description": "Introduced in 2015, the Michelin Pilot Sport 4 is a max performance summer tire crafted for the most powerful and agile passenger cars. Known for its exceptional handling and rapid response to steering inputs, this tire is ideal for drivers seeking a dynamic driving experience. It is equipped with Michelin's innovative Dynamic Response Technology, which ensures precise control and stability across various driving conditions.\r\n\r\n### Features & Benefits\r\n\r\n* **Dynamic Response Technology**: Incorporates aramid and nylon fibers within the carcass, enhancing the tire's resistance to dynamic deformations and ensuring stable performance.\r\n* **Optimized Wet Grip**: Features a tread compound enriched with functional elastomers and increased silica content, providing superior traction on wet surfaces and reducing the risk of aquaplaning.\r\n* **Hybrid Carcass Structure**: A combination of aramid and nylon fibers that increase the structural integrity of the tire, allowing for high-speed durability and responsiveness.\r\n* **Functional Elastomers in Tread Compound**: Special polymers that enhance the tire's elasticity and grip on wet roads.\r\n* **High-Performance Drainage System**: Wide longitudinal grooves effectively channel water away from the tread, ensuring safety during rainy conditions.\r\n\r\n### Year Released\r\n\r\nThe Michelin Pilot Sport 4 was launched in 2015, adding to Michelin's prestigious lineup of high-performance tires.\r\n\r\n### Regions Availability\r\n\r\nThis tire is available in numerous regions including North America, Central & South America, Europe, Russia+, East Asia, Southeast Asia, the Middle East, Africa, and Oceania.\r\n\r\n### Vehicle Compatibility / Popular Vehicle Fitments\r\n\r\n* Alpine A110\r\n* Audi A4, A5\r\n* Ford Fiesta\r\n* Nissan Qashqai\r\n* Opel Corsa\r\n* Peugeot 308\r\n* Porsche Panamera\r\n* Renault Clio\r\n* Volvo S90\r\n* Toyota 86 ZN8/ZD8\r\n* Honda Civic, Civic XI\r\n\r\n### Final Thoughts\r\n\r\nThe Michelin Pilot Sport 4 is designed for drivers seeking top-tier performance, safety, and driving enjoyment. It combines advanced technology and high-quality materials, making it suitable for premium and sports cars. This tire provides excellent handling in both urban and high-speed environments, ensuring a responsive and engaging driving experience for high-performance vehicles.",
+  "tags": [
+   "GRIP",
+   "TREADLIFE",
+   "PREMIUM VEHICLES",
+   "SAFETY",
+   "CONTROL",
+   "SPORT PERFORMANCE"
+  ],
+  "ancestor": null,
+  "successors": [],
+  "runflat_models": [],
+  "counters": {
+   "modes": 0,
+   "videos": 7,
+   "benchmarks": 17
+  },
+  "regions": [
+   {
+    "slug": "north-america",
+    "display": "North America"
+   },
+   {
+    "slug": "ladm",
+    "display": "Central & South America"
+   },
+   {
+    "slug": "eudm",
+    "display": "Europe"
+   },
+   {
+    "slug": "russia",
+    "display": "Russia+"
+   },
+   {
+    "slug": "east-asia",
+    "display": "East Asia"
+   },
+   {
+    "slug": "sam",
+    "display": "Southeast Asia"
+   },
+   {
+    "slug": "medm",
+    "display": "Middle East"
+   },
+   {
+    "slug": "audm",
+    "display": "Oceania"
+   }
+  ],
+  "rating": {
+   "score": 76,
+   "popularity": 63,
+   "tags": [
+    {
+     "slug": "pricequality",
+     "display": "Price/Quality",
+     "connotation": "good"
+    },
+    {
+     "slug": "dry-performance",
+     "display": "Dry Performance",
+     "connotation": "good"
+    },
+    {
+     "slug": "treadwear",
+     "display": "Treadwear",
+     "connotation": "good"
+    },
+    {
+     "slug": "wet-performance",
+     "display": "Wet Performance",
+     "connotation": "good"
+    },
+    {
+     "slug": "handling",
+     "display": "Handling",
+     "connotation": "good"
+    },
+    {
+     "slug": "comfort",
+     "display": "Comfort",
+     "connotation": "acceptable"
+    }
+   ]
+  },
+  "has_bnb_reasons": true,
+  "image": "https://ws-tires.s3.amazonaws.com/cache/50/25/5025c282c9c96df101f677684859d720.png"
+ },
+ "meta": {
+  "last_update": "2024-04-29 02:35:14.538144"
+ }
+}

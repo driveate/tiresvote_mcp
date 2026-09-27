@@ -1,0 +1,84 @@
+{
+ "data": [
+  {
+   "slug": "2027-adac-winter-tire-test-r17",
+   "title": "ADAC: Winter Tire Test R17",
+   "canonical_link": "https://tiresvote.com/collection/2027-adac-winter-tire-test-r17/",
+   "year": 2027,
+   "season": {
+    "slug": "winter",
+    "display": "Winter"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "image": null,
+   "tire_size": "225/50R17",
+   "publication_date": "2026-09-24",
+   "regions": [
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    }
+   ]
+  },
+  {
+   "slug": "2027-adac-winter-tire-test-r15",
+   "title": "ADAC: Winter Tire Test R15",
+   "canonical_link": "https://tiresvote.com/collection/2027-adac-winter-tire-test-r15/",
+   "year": 2027,
+   "season": {
+    "slug": "winter",
+    "display": "Winter"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "image": null,
+   "tire_size": "185/65R15",
+   "publication_date": "2026-09-24",
+   "regions": [
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    }
+   ]
+  },
+  {
+   "slug": "2027-gtuautozeitungacvarbo-all-season-tire-test-r17",
+   "title": "GTÜ/Autozeitung/ACV/ARBÖ: All-Season Tire Test R17",
+   "canonical_link": "https://tiresvote.com/collection/2027-gtuautozeitungacvarbo-all-season-tire-test-r17/",
+   "year": 2027,
+   "season": {
+    "slug": "all",
+    "display": "All Season"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "image": null,
+   "tire_size": "225/45R17",
+   "publication_date": "2026-09-24",
+   "regions": [
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    }
+   ]
+  }
+ ],
+ "meta": {
+  "pagination": {
+   "current_page_count": 3,
+   "total_items": 366,
+   "total_pages": 122,
+   "first": "https://api.wheel-size.com/v2/tires/tests/?per_page=10&page=1",
+   "prev": null,
+   "next": "https://api.wheel-size.com/v2/tires/tests/?per_page=10&page=2",
+   "last": "https://api.wheel-size.com/v2/tires/tests/?per_page=10&page=37"
+  }
+ }
+}

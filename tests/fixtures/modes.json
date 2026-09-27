@@ -1,0 +1,59 @@
+{
+ "data": [
+  {
+   "sizing_system": "metric",
+   "text": "205/55 R16 (91Y)",
+   "load_index": 91,
+   "dual_load_index": null,
+   "speed_index": "(Y)",
+   "extra_load": false,
+   "mud_and_snow": false,
+   "rim_protection": false,
+   "tire_width": 205,
+   "aspect_ratio": 55,
+   "rim_diameter": 16.0
+  },
+  {
+   "sizing_system": "metric",
+   "text": "205/55 R16 91W",
+   "load_index": 91,
+   "dual_load_index": null,
+   "speed_index": "W",
+   "extra_load": false,
+   "mud_and_snow": false,
+   "rim_protection": false,
+   "tire_width": 205,
+   "aspect_ratio": 55,
+   "rim_diameter": 16.0
+  },
+  {
+   "sizing_system": "lt-metric",
+   "text": "215/75 R15 100/97Q",
+   "load_index": 100,
+   "dual_load_index": 97,
+   "speed_index": "Q",
+   "extra_load": false,
+   "mud_and_snow": false,
+   "rim_protection": false,
+   "tire_width": 215,
+   "aspect_ratio": 75,
+   "rim_diameter": 15.0
+  },
+  {
+   "sizing_system": "flotation",
+   "text": "35x12.50 R17 121Q",
+   "load_index": 121,
+   "dual_load_index": null,
+   "speed_index": "Q",
+   "extra_load": false,
+   "mud_and_snow": false,
+   "rim_protection": false,
+   "overall_diameter": 35.0,
+   "section_width": 12.5,
+   "rim_diameter": 17.0
+  }
+ ],
+ "meta": {
+  "count": 4
+ }
+}

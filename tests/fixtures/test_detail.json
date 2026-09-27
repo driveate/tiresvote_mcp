@@ -1,0 +1,201 @@
+{
+ "data": {
+  "slug": "2027-adac-winter-tire-test-r17",
+  "title": "ADAC: Winter Tire Test R17",
+  "canonical_link": "https://tiresvote.com/collection/2027-adac-winter-tire-test-r17/",
+  "year": 2027,
+  "season": {
+   "slug": "winter",
+   "display": "Winter"
+  },
+  "automobile_type": {
+   "slug": "car",
+   "display": "Passenger"
+  },
+  "image": null,
+  "tire_size": "225/50R17",
+  "publication_date": "2026-09-24",
+  "regions": [
+   {
+    "slug": "eudm",
+    "display": "Europe"
+   }
+  ],
+  "items": [
+   {
+    "place": 1,
+    "description": "Winner, rated 'good'. The best wet performance in the test — short braking, generous aquaplaning reserves and precise wet handling — while staying even on dry and winter surfaces (2.4). The noted downside is interior noise.",
+    "positive_tags": [
+     "Aquaplaning",
+     "Wet Braking"
+    ],
+    "negative_tags": [
+     "Noise"
+    ],
+    "test_score": 2.2,
+    "recommend": true,
+    "product": {
+     "slug": "cinturato-winter-3",
+     "display": "Cinturato Winter 3",
+     "brand": {
+      "slug": "pirelli",
+      "display": "Pirelli",
+      "price_segment": "Premium"
+     },
+     "canonical_link": "https://tiresvote.com/catalog/pirelli/cinturato-winter-3/",
+     "has_modes": {
+      "225/50R17": [
+       "225/50 R17 98V M+S XL"
+      ]
+     },
+     "year": 2025,
+     "regions": [
+      {
+       "slug": "eudm",
+       "display": "Europe"
+      }
+     ],
+     "studded": false,
+     "for_nordic_winter": false,
+     "image": "https://ws-tires.s3.amazonaws.com/cache/07/64/07641876e5a37dc23e7594273eb73e9a.png",
+     "manufacturer_page_link": "https://www.pirelli.com/tyres/en-ww/car/catalogue/product/cinturato-winter-3",
+     "rating": {
+      "score": 93,
+      "popularity": 41,
+      "tags": []
+     }
+    }
+   },
+   {
+    "place": 2,
+    "description": "Second, 'good'. Consistent across driving safety (2.2), winter surfaces (2.4) and environmental balance (2.5) — no real weak spot.",
+    "positive_tags": [],
+    "negative_tags": [],
+    "test_score": 2.3,
+    "recommend": true,
+    "product": {
+     "slug": "wintercontact-ts-870",
+     "display": "WinterContact TS 870",
+     "brand": {
+      "slug": "continental",
+      "display": "Continental",
+      "price_segment": "Premium"
+     },
+     "canonical_link": "https://tiresvote.com/catalog/continental/wintercontact-ts-870/",
+     "has_modes": {
+      "225/50R17": [
+       "225/50 R17 98H XL",
+       "225/50 R17 98V",
+       "225/50 R17 98V XL"
+      ]
+     },
+     "year": 2020,
+     "regions": [
+      {
+       "slug": "eudm",
+       "display": "Europe"
+      },
+      {
+       "slug": "russia",
+       "display": "Russia+"
+      }
+     ],
+     "studded": false,
+     "for_nordic_winter": false,
+     "image": "https://ws-tires.s3.amazonaws.com/cache/77/b6/77b6d0abb53e8b8e9921cd4d6b50d5e8.png",
+     "manufacturer_page_link": "https://www.continental-tires.com/car/tires/wintercontact-ts-870",
+     "rating": {
+      "score": 92,
+      "popularity": 57,
+      "tags": [
+       {
+        "slug": "pricequality",
+        "display": "Price/Quality",
+        "connotation": "excellent"
+       },
+       {
+        "slug": "wet-performance",
+        "display": "Wet Performance",
+        "connotation": "excellent"
+       },
+       {
+        "slug": "comfort",
+        "display": "Comfort",
+        "connotation": "excellent"
+       },
+       {
+        "slug": "dry-performance",
+        "display": "Dry Performance",
+        "connotation": "excellent"
+       },
+       {
+        "slug": "snowice-performance",
+        "display": "Snow/Ice Performance",
+        "connotation": "excellent"
+       },
+       {
+        "slug": "treadwear",
+        "display": "Treadwear",
+        "connotation": "excellent"
+       },
+       {
+        "slug": "handling",
+        "display": "Handling",
+        "connotation": "good"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "place": 3,
+    "description": "Third, 'good'. The best environmental balance of the top group (2.0) with a very high projected mileage; even 2.6 grades on driving safety and winter surfaces.",
+    "positive_tags": [
+     "Efficiency",
+     "Treadwear"
+    ],
+    "negative_tags": [],
+    "test_score": 2.4,
+    "recommend": true,
+    "product": {
+     "slug": "ultragrip-performance-3",
+     "display": "UltraGrip Performance 3",
+     "brand": {
+      "slug": "goodyear",
+      "display": "Goodyear",
+      "price_segment": "Premium"
+     },
+     "canonical_link": "https://tiresvote.com/catalog/goodyear/ultragrip-performance-3/",
+     "has_modes": {
+      "225/50R17": [
+       "225/50 R17 94H",
+       "225/50 R17 98H XL",
+       "225/50 R17 98V XL"
+      ]
+     },
+     "year": 2023,
+     "regions": [
+      {
+       "slug": "eudm",
+       "display": "Europe"
+      },
+      {
+       "slug": "russia",
+       "display": "Russia+"
+      }
+     ],
+     "studded": false,
+     "for_nordic_winter": false,
+     "image": "https://ws-tires.s3.amazonaws.com/cache/df/c5/dfc55d1f86b7ad5299cd0b4342eaa1be.jpg",
+     "manufacturer_page_link": "https://www.goodyear.eu/en_ie/consumer/tires/ultragrip_performance3.UGPERFORM3.html",
+     "rating": {
+      "score": 90,
+      "popularity": 54,
+      "tags": []
+     }
+    }
+   }
+  ]
+ },
+ "meta": {}
+}

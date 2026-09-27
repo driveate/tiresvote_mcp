@@ -1,0 +1,175 @@
+{
+ "data": [
+  {
+   "slug": "pilot-sport-4s",
+   "display": "Pilot Sport 4S",
+   "brand": {
+    "slug": "michelin",
+    "display": "Michelin",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/michelin/pilot-sport-4s/",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2017,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 229
+   },
+   "regions": [
+    {
+     "slug": "north-america",
+     "display": "North America"
+    },
+    {
+     "slug": "ladm",
+     "display": "Central & South America"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "russia",
+     "display": "Russia+"
+    },
+    {
+     "slug": "jdm",
+     "display": "Japan"
+    },
+    {
+     "slug": "skdm",
+     "display": "South Korea"
+    },
+    {
+     "slug": "sam",
+     "display": "Southeast Asia"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    },
+    {
+     "slug": "africa",
+     "display": "Africa"
+    },
+    {
+     "slug": "audm",
+     "display": "Oceania"
+    }
+   ]
+  },
+  {
+   "slug": "pilot-sport-as-3plus-zp",
+   "display": "Pilot Sport A/S 3+ ZP",
+   "brand": {
+    "slug": "michelin",
+    "display": "Michelin",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/michelin/pilot-sport-as-3plus-zp/",
+   "season": {
+    "slug": "all",
+    "display": "All Season"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2016,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": true,
+   "counters": {
+    "modes": 104
+   },
+   "regions": [
+    {
+     "slug": "usdm",
+     "display": "USA+"
+    },
+    {
+     "slug": "cdm",
+     "display": "Canada"
+    },
+    {
+     "slug": "east-asia",
+     "display": "East Asia"
+    },
+    {
+     "slug": "sam",
+     "display": "Southeast Asia"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    }
+   ]
+  },
+  {
+   "slug": "primacy-mxv4",
+   "display": "Primacy MXV4",
+   "brand": {
+    "slug": "michelin",
+    "display": "Michelin",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/michelin/primacy-mxv4/",
+   "season": {
+    "slug": "all",
+    "display": "All Season"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2007,
+   "discontinued": true,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 42
+   },
+   "regions": [
+    {
+     "slug": "usdm",
+     "display": "USA+"
+    },
+    {
+     "slug": "cdm",
+     "display": "Canada"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "east-asia",
+     "display": "East Asia"
+    },
+    {
+     "slug": "sam",
+     "display": "Southeast Asia"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    }
+   ]
+  }
+ ],
+ "meta": {
+  "count": 3
+ }
+}

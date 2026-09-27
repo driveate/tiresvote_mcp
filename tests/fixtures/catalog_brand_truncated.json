@@ -1,0 +1,187 @@
+{
+ "data": [
+  {
+   "slug": "potenza-sport",
+   "display": "Potenza Sport",
+   "brand": {
+    "slug": "bridgestone",
+    "display": "Bridgestone",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/bridgestone/potenza-sport/",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2021,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 87
+   },
+   "regions": [
+    {
+     "slug": "north-america",
+     "display": "North America"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "russia",
+     "display": "Russia+"
+    },
+    {
+     "slug": "chdm",
+     "display": "China"
+    },
+    {
+     "slug": "sam",
+     "display": "Southeast Asia"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    },
+    {
+     "slug": "africa",
+     "display": "Africa"
+    },
+    {
+     "slug": "audm",
+     "display": "Oceania"
+    }
+   ]
+  },
+  {
+   "slug": "turanza-6",
+   "display": "Turanza 6",
+   "brand": {
+    "slug": "bridgestone",
+    "display": "Bridgestone",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/bridgestone/turanza-6/",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2023,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 109
+   },
+   "regions": [
+    {
+     "slug": "usdm",
+     "display": "USA+"
+    },
+    {
+     "slug": "cdm",
+     "display": "Canada"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "russia",
+     "display": "Russia+"
+    },
+    {
+     "slug": "jdm",
+     "display": "Japan"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    },
+    {
+     "slug": "audm",
+     "display": "Oceania"
+    }
+   ]
+  },
+  {
+   "slug": "turanza-t005",
+   "display": "Turanza T005",
+   "brand": {
+    "slug": "bridgestone",
+    "display": "Bridgestone",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/bridgestone/turanza-t005/",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2018,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 239
+   },
+   "regions": [
+    {
+     "slug": "north-america",
+     "display": "North America"
+    },
+    {
+     "slug": "ladm",
+     "display": "Central & South America"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "russia",
+     "display": "Russia+"
+    },
+    {
+     "slug": "chdm",
+     "display": "China"
+    },
+    {
+     "slug": "skdm",
+     "display": "South Korea"
+    },
+    {
+     "slug": "sam",
+     "display": "Southeast Asia"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    },
+    {
+     "slug": "audm",
+     "display": "Oceania"
+    }
+   ]
+  }
+ ],
+ "meta": {
+  "count": 318
+ }
+}

@@ -1,0 +1,145 @@
+{
+ "data": {
+  "slug": "primacy-3",
+  "display": "Primacy 3",
+  "brand": {
+   "slug": "michelin",
+   "display": "Michelin",
+   "price_segment": "Premium"
+  },
+  "canonical_link": "https://tiresvote.com/catalog/michelin/primacy-3/",
+  "season": {
+   "slug": "summer",
+   "display": "Summer"
+  },
+  "automobile_type": {
+   "slug": "car",
+   "display": "Passenger"
+  },
+  "performance_category": {
+   "slug": "car-grand-touring-summer",
+   "display": "Premium Touring Summer"
+  },
+  "year": 2011,
+  "discontinued": false,
+  "almost_discontinued": true,
+  "coming_soon": false,
+  "is_runflat": false,
+  "studded": false,
+  "for_nordic_winter": false,
+  "is_oe_model": false,
+  "manufacturer_page_link": "https://www.michelin.com.my/auto/tyres/michelin-primacy-3",
+  "description": "Launched in 2011, the Michelin Primacy 3 is an ultra-high performance summer tire designed to cater to a wide range of premium vehicles. It emerged as a successor to the Michelin Primacy HP, aiming to provide superior grip, reduced braking distances, and enhanced safety on both dry and wet roads. This tire is particularly noted for its performance during critical driving conditions, significantly improving the handling and stability of high-end vehicles such as Audi, BMW, and Mercedes-Benz.\r\n\r\n### Features & Benefits\r\n\r\n* **Superior Wet and Dry Grip**: Delivers exceptional traction on both wet and dry surfaces, reducing braking distances substantially due to its innovative tread design and rubber compound.\r\n* **Advanced Safety Features**: Incorporates unique sipe technologies and tread patterns that enhance road contact and prevent aquaplaning, ensuring safer driving experiences in adverse weather conditions.\r\n* **Optimized Fuel Efficiency**: Features Michelin's patented rubber compounds that lower rolling resistance, thereby reducing fuel consumption and contributing to a more eco-friendly drive.\r\n* **Self-locking Sipes**: This innovative feature allows the tire to maintain a large contact patch with the road, enhancing grip and stability during hard braking or cornering.\r\n* **Smoothed Tread Blocks**: Reduces deformation caused by dynamic acceleration, which in turn improves the overall traction and shortens the braking distance significantly.\r\n* **Innovative Rubber Compound**: Combines three different elastomers with a synthetic plasticizer and silicon-based hardening agents, optimizing the tire's performance without compromising durability or fuel efficiency.\r\n\r\n### Year Released\r\n\r\nThe Michelin Primacy 3 was introduced in 2011 and has since been a preferred choice for drivers looking for a reliable and high-performing summer tire.\r\n\r\n### Regions Availability\r\n\r\nThis tire is available in numerous markets including North America, Central & South America, Europe, Russia+, East Asia, Southeast Asia, the Middle East, and Oceania, making it a versatile option for various driving environments.\r\n\r\n### Vehicle Compatibility / Popular Vehicle Fitments\r\n\r\n* Audi: A3, A4, A4 Allroad, A5, A6, A8\r\n* BMW: 1 Series, 2 Series Active Tourer, 3 Series, 5 Series, 7 Series, X3\r\n* Mercedes-Benz: A-Class, B-Class, CLA-Class, E-Class, GLA-Class, S-Class\r\n* Volvo: V60, V70, S60, S90\r\n* Citroën: C3, C4 Picasso, DS3, DS4, DS5\r\n* Others: Ford Mondeo, Nissan Juke, Tesla Model S, Volkswagen Golf, and many more\r\n\r\n*Note: Always consult with a tire specialist or the vehicle's manufacturer to ensure correct tire fitment.*\r\n\r\n### Final Thoughts\r\n\r\nThe Michelin Primacy 3 is designed to improve the driving dynamics of premium vehicles, focusing on safety, performance, and efficiency. It is well-suited for drivers who prioritize superior handling, comfort, and durability. This tire offers reliable control in various conditions, including tight corners and wet braking, positioning it as a strong option in the premium touring tire category.",
+  "tags": [
+   "SAFETY",
+   "LUXURY VEHICLES",
+   "FUEL EFFICIENCY",
+   "ORIGINAL EQUIPMENT",
+   "COMFORT",
+   "WET PERFORMANCE",
+   "PASSENGER"
+  ],
+  "ancestor": {
+   "brand_slug": "michelin",
+   "product_slug": "primacy-hp",
+   "display_name": "Primacy HP"
+  },
+  "successors": [],
+  "runflat_models": [
+   {
+    "brand_slug": "michelin",
+    "product_slug": "primacy-3-zp",
+    "display_name": "Primacy 3 ZP"
+   }
+  ],
+  "counters": {
+   "modes": 0,
+   "videos": 5,
+   "benchmarks": 1
+  },
+  "regions": [
+   {
+    "slug": "north-america",
+    "display": "North America"
+   },
+   {
+    "slug": "ladm",
+    "display": "Central & South America"
+   },
+   {
+    "slug": "eudm",
+    "display": "Europe"
+   },
+   {
+    "slug": "russia",
+    "display": "Russia+"
+   },
+   {
+    "slug": "east-asia",
+    "display": "East Asia"
+   },
+   {
+    "slug": "sam",
+    "display": "Southeast Asia"
+   },
+   {
+    "slug": "medm",
+    "display": "Middle East"
+   },
+   {
+    "slug": "africa",
+    "display": "Africa"
+   },
+   {
+    "slug": "audm",
+    "display": "Oceania"
+   }
+  ],
+  "rating": {
+   "score": 72,
+   "popularity": 42,
+   "tags": [
+    {
+     "slug": "pricequality",
+     "display": "Price/Quality",
+     "connotation": "excellent"
+    },
+    {
+     "slug": "dry-performance",
+     "display": "Dry Performance",
+     "connotation": "excellent"
+    },
+    {
+     "slug": "comfort",
+     "display": "Comfort",
+     "connotation": "excellent"
+    },
+    {
+     "slug": "wet-performance",
+     "display": "Wet Performance",
+     "connotation": "excellent"
+    },
+    {
+     "slug": "treadwear",
+     "display": "Treadwear",
+     "connotation": "excellent"
+    },
+    {
+     "slug": "handling",
+     "display": "Handling",
+     "connotation": "acceptable"
+    },
+    {
+     "slug": "snowice-performance",
+     "display": "Snow/Ice Performance",
+     "connotation": "bad"
+    }
+   ]
+  },
+  "has_bnb_reasons": true,
+  "image": "https://ws-tires.s3.amazonaws.com/cache/9e/44/9e446c542ae48b08246de2fc57147a67.jpg"
+ },
+ "meta": {
+  "last_update": "2024-04-29 02:43:11.686819"
+ }
+}

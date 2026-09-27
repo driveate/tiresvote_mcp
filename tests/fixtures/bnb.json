@@ -1,0 +1,34 @@
+{
+ "data": {
+  "buy": [
+   {
+    "text": "Many drivers said that the tires offered a good grip and nice handling while driving.",
+    "prooflink": "https://tiresvote.com/catalog/michelin/pilot-sport-4/#bnb-f54557affc",
+    "upvotes": 28
+   },
+   {
+    "text": "The drivers appreciated the tire’s responsive handling in both dry and wet conditions.",
+    "prooflink": "https://tiresvote.com/catalog/michelin/pilot-sport-4/#bnb-cf69b0f376",
+    "upvotes": 21
+   },
+   {
+    "text": "One driver said that aquaplaning resistance was excellent.",
+    "prooflink": "https://tiresvote.com/catalog/michelin/pilot-sport-4/#bnb-e609860d8c",
+    "upvotes": 17
+   },
+   {
+    "text": "The owner mentioned that the tires were very quiet, soft, comfortable and very safe.",
+    "prooflink": "https://tiresvote.com/catalog/michelin/pilot-sport-4/#bnb-e958ab3628",
+    "upvotes": 23
+   }
+  ],
+  "not_buy": [
+   {
+    "text": "Some drivers mentioned that the tires were a bit noisy.",
+    "prooflink": "https://tiresvote.com/catalog/michelin/pilot-sport-4/#bnb-d22e1b55f2",
+    "upvotes": 31
+   }
+  ]
+ },
+ "meta": {}
+}

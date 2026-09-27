@@ -1,15 +1,17 @@
-# Tools inventory — первая версия
+# Tools inventory — first version
 
-Статус: утверждённый список инструментов и проект их параметров; регистрации MCP
-ещё нет. При реализации дополнить каждую секцию точным английским docstring и
-описаниями `Field`, затем проверять их синхронность тестом. Названия инструментов
-и исключения ниже — согласованный объём продукта.
+Status: implemented — exactly the 12 `tires_*` tools below are registered.
+The registered names, English docstrings and `Field` descriptions are the
+authoritative wording; `docs/tool-schemas.json` is a generated snapshot of the
+registered input schemas. `tests/test_inventory.py` verifies synchronization
+through the registered MCP interface (not by parsing source).
 
-Все пути ниже начинаются с `/v2/tires/` и вызываются методом GET.
-`brand`, `product`, `slug` получают из ответов каталога/поиска; имя модели не
-гарантирует совпадение с её slug. Нотацию размера передают без slug-нормализации.
+All paths below start with `/v2/tires/` and are invoked via GET.
+`brand`, `product`, `slug` are obtained from catalog/search responses; a model
+name does not guarantee a match with its slug. Size notation is passed without
+slug normalization.
 
-| Инструмент | Относительный API path | Модуль |
+| Tool | Relative API path | Module |
 |---|---|---|
 | `tires_list_brands` | `/catalog/` | catalog |
 | `tires_list_brand_tires` | `/catalog/{brand}/` | catalog |
@@ -24,158 +26,206 @@
 | `tires_list_regions` | `/regions/` | catalog |
 | `tires_list_performance_categories` | `/performance-categories/` | catalog |
 
-Исключённые upstream paths: `/articles/`, `/top-charts/`, `/top-charts/{slug}/`.
-Общий read-any-path инструмент также не входит в интерфейс.
+Excluded upstream paths: `/articles/`, `/top-charts/`, `/top-charts/{slug}/`.
+A generic read-any-path tool is also not part of the interface.
 
-## Общие параметры
+## Common parameters and bounds
 
-- API-пагинация: `page: int = 1` (>=1), `per_page: int = 10` (1–20).
-- MCP-пагинация полных upstream-списков: `limit: int = 20` (1–50),
-  `offset: int = 0` (>=0). Эти параметры в upstream не отправляются.
-- Массивы: нормальная MCP JSON Schema `array` + `items`; HTTP — повторяющиеся
-  query keys. Пустой массив лучше отклонить с подсказкой убрать параметр.
-- Необязательные boolean передаются только если заданы; `False` сохраняется.
-- Сортировка `ordering`: поля `popularity`, `score`, `slug`, необязательный `-`,
-  запятая как разделитель; default upstream `-popularity,-score,slug`.
+- API pagination: `page: int = 1` (>=1), `per_page: int = 10` (1–20). Sent
+  upstream; never re-sliced locally.
+- MCP pagination of complete upstream lists: `limit: int = 20` (1–50),
+  `offset: int = 0` (>=0). These parameters are not sent upstream.
+- Arrays: standard MCP JSON Schema `array` + `items`; HTTP — repeated
+  query keys. An explicitly empty array is rejected with a hint to remove the
+  parameter. **MCP-side bound:** every list parameter accepts at most 20
+  values (`maxItems: 20`) — the upstream API documents no such cap; exceeding
+  it only produces arbitrarily long URLs.
+- Optional booleans are sent only when set; `False` is preserved.
+- `ordering` sort: fields `popularity`, `score`, `slug`, optional `-`,
+  comma as separator; upstream default `-popularity,-score,slug`.
+- Response budget: every tool response is capped at ~40 KB serialized JSON
+  (roughly 8–10k tokens — a byte ceiling, not an exact token count).
+  Overflowing payloads fail with an actionable error ("Reduce limit/per_page
+  or narrow the filters") instead of silently dropping identifiers or
+  citations. An extreme single object can exceed the budget even at
+  `limit=1` — that is an honest error, not retrievable truncation.
+- Nested caps name a continuation route: `regions` ≤10 slugs per row
+  (`regions_more`), `rating.tags` ≤8 (`tags_more`), `has_modes` ≤8
+  designations per size (`_truncated_sizes`), card `tags`/family lists ≤12/10
+  (`tags_more`, `successors_more`, `runflat_models_more`), material/benchmark/
+  participant tag lists ≤12 (`*_more`), long text fields are cut with
+  `*_truncated: true`. Continuations: `tires_list_sizes` for variants, the
+  object's own `canonical_link`/`prooflink`/`url` for text and tags.
+  `countries` (regions) and performance-category `description`/`tags` are
+  preserved whole because no continuation route exists for them.
 
 ## `tires_list_brands`
 
-Фильтр `price_segments: list[str] | None` → `price_segment`.
-MCP `limit/offset`. Ответ: slug, display, price_segment, products_count.
-Сегменты `premium`, `mid-range`, `economy` присутствуют в снимке схемы;
-значения справочника могут меняться, не превращать снимок в вечный enum.
+Filter `price_segments: list[str] | None` → `price_segment`.
+MCP `limit`/`offset`. Response: slug, display, price_segment, products_count.
+The `premium`, `mid-range`, `economy` segments are present in the schema
+snapshot; reference values may change — do not turn the snapshot into a
+permanent enum. `price_segment` is a display string and stays `null` when the
+brand is unassigned.
 
 ## `tires_list_brand_tires`
 
-Обязателен `brand: str`. Фильтры:
+`brand: str` is required. Filters:
 
-| MCP | API | Тип / смысл |
+| MCP | API | Type / meaning |
 |---|---|---|
-| `regions` | `region` | `list[str]`, рынки TiresVote |
+| `regions` | `region` | `list[str]`, TiresVote markets |
 | `seasons` | `season` | `list[str]`: summer, all, winter |
-| `automobile_type` | `automobile_type` | car или suv |
-| `runflat` | `runflat` | bool; true = только RunFlat по сериализатору каталога бренда и описанию снимка |
-| `include_discontinued` | `show_discontinued` | bool; true включает снятые модели |
-| `include_oe` | `show_oe` | bool; true включает OE-модели |
-| `ordering` | `ordering` | Общая сортировка |
+| `automobile_type` | `automobile_type` | car or suv |
+| `runflat` | `runflat` | bool; true = RunFlat only, per live verification |
+| `include_discontinued` | `show_discontinued` | bool; true includes discontinued models |
+| `include_oe` | `show_oe` | bool; true includes OE models |
+| `ordering` | `ordering` | Common sort |
 
-MCP `limit/offset`. Upstream возвращает максимум 200 моделей. Ответ отдельно
-сообщает `total`, `available_count`, `truncated`; следующая MCP-страница возможна
-только внутри реально полученного набора. Для дальнейшего поиска предложить
-уточнить фильтры или использовать `tires_search_advanced(brands=[...])`.
+MCP `limit`/`offset`. Upstream returns at most 200 models. The response reports
+`total`, `available_count`, `truncated` separately; the next MCP page is
+possible only within the actually fetched set. For further search, suggest
+refining the filters or using `tires_search_advanced(brands=[...])`.
+`counters.modes` can read 0 although variants exist — verify via
+`tires_list_sizes`, never infer absence. An unknown brand slug returns an
+empty 200 list, not 404.
 
 ## `tires_get_tire`
 
-Обязательны `brand`, `product`. Предлагаемый локальный параметр
-`detail: Literal['concise', 'full'] = 'concise'` управляет проекцией.
-Оба режима сохраняют идентичность, каноническую ссылку, статусы, категорию,
-CoreScore/Popularity и `last_update`. Полный режим добавляет доступное описание,
-заявленные признаки и изображения в пределах бюджета ответа.
-Связи ancestor/successors/runflat_models позволяют перейти к другой модели.
-`full` означает полноту выбранных полей, а не снятие лимита длины.
+`brand`, `product` are required.
+`detail` (Literal['concise', 'full'], default 'concise') controls the projection.
+Both modes preserve identity, canonical link, statuses, category,
+CoreScore/Popularity and `last_update`. Full mode adds the available
+description (≤4000 chars, `description_truncated`), claimed attribute tags and
+image within the response budget. The ancestor/successors/runflat_models
+relations carry `brand`/`product` slugs usable directly with this tool; a cut
+list is reported via `*_more` and the model's `canonical_link` is the
+complete-record citation. `full` means completeness of the selected fields,
+not removal of the length limit.
 
 ## `tires_list_sizes`
 
-Обязательны `brand`, `product`; MCP `limit/offset`.
-Ответ сохраняет `sizing_system`, `text`, геометрию, индексы нагрузки/скорости,
-XL, M+S и защиту обода. Дробные диаметры допустимы в ответе.
-Это известные актуальные исполнения из каталога; снятые исполнения upstream
-исключает. Проверять складское наличие этот инструмент не может.
+`brand`, `product` are required; MCP `limit`/`offset`.
+The response preserves `sizing_system`, `text`, geometry, load/speed indices,
+XL, M+S and rim protection. Fractional diameters are allowed in the response;
+`dual_load_index` appears on lt-metric variants. These are the known current
+variants from the catalog; upstream excludes discontinued variants. This tool
+cannot check warehouse stock.
 
 ## `tires_search`
 
-`query: str` обязателен, максимум 100 символов (`QuerySearchFilterSerializer` в
-`src/apps/api/v2/search/serializers.py` репозитория TiresVote; в снимке Swagger
-`maxLength` потерян); API `page/per_page`.
-Поиск используется для разрешения названия в `brand` + `product`, включая случаи
-нескольких похожих моделей. Ответ содержит компактные карточки, рейтинг и ссылки.
+`query` (str) is required, max 100 characters (`QuerySearchFilterSerializer` in
+`src/apps/api/v2/search/serializers.py` of the TiresVote repository; the Swagger
+snapshot lost `maxLength`); API `page`/`per_page`.
+Search is used to resolve a name into `brand` + `product`, including cases with
+several similar models. The response contains compact cards, rating and links.
+Unlike `tires_search_advanced`, text search applies no discontinued/RunFlat/OE
+defaults — discontinued models may appear (live-observed).
 
 ## `tires_search_advanced`
 
-Все фильтры необязательны; API `page/per_page` и `ordering`.
+All filters are optional; API `page`/`per_page` and `ordering`.
 
-| MCP | API | Тип / смысл |
+| MCP | API | Type / meaning |
 |---|---|---|
 | `brands` | `b` | `list[str]` |
-| `regions` | `reg` | `list[str]`, рынки TiresVote |
+| `regions` | `reg` | `list[str]`, TiresVote markets |
 | `seasons` | `s` | `list[str]`: summer, all, winter |
 | `automobile_types` | `at` | `list[str]`: car, suv |
-| `performance_categories` | `pc` | `list[str]` из справочника |
-| `price_segments` | `ps` | `list[str]`, сегмент бренда |
-| `production_years` | `y` | `list[int]`, 1900…текущий год+2 (в снимке 2028) |
-| `tire_widths` | `tw` | `list[int]`, 95–525 мм |
+| `performance_categories` | `pc` | `list[str]` from the reference |
+| `price_segments` | `ps` | `list[str]`, brand segment |
+| `production_years` | `y` | `list[int]`, 1900…current year+2 |
+| `tire_widths` | `tw` | `list[int]`, 95–525 mm |
 | `aspect_ratios` | `ar` | `list[int]`, 20–95 |
-| `rim_diameters` | `rd` | `list[int]`, 10–32 дюйма |
-| `speed_indices` | `si` | `list[str]`, точные значения |
-| `load_indices` | `li` | `list[int]`, 0–150, точные значения, не нижняя граница |
-| `sizes` | `t` | `list[str]`, например `225/45R17`; исходная нотация |
-| `include_discontinued` | `np` | bool; по коду true включает снятые модели; в снимке не описано |
-| `include_runflat` | `rf` | bool; имя предварительное — источники расходятся, см. ниже |
-| `include_oe` | `oe` | bool; по коду true включает OE-модели; в снимке не описано |
-| `extra_load` | `xl` | bool, свойство исполнения |
-| `mud_and_snow` | `ms` | bool, свойство исполнения |
-| `nordic_winter` | `nw` | bool, свойство модели |
+| `rim_diameters` | `rd` | `list[int]`, 10–32 inches |
+| `speed_indices` | `si` | `list[str]`, exact values, not a lower bound |
+| `load_indices` | `li` | `list[int]`, 0–150, exact values, not a lower bound |
+| `sizes` | `t` | `list[str]`, e.g. `225/45R17`; original notation. MCP-side bound: each ≤50 chars |
+| `include_discontinued` | `np` | bool include flag; live-verified |
+| `runflat_filter` | `rf` | bool neutral visibility flag; live-verified asymmetric semantics |
+| `include_oe` | `oe` | bool include flag; live-verified |
+| `extra_load` | `xl` | bool, variant attribute |
+| `mud_and_snow` | `ms` | bool, variant attribute |
+| `nordic_winter` | `nw` | bool, model attribute |
 
-По `rf` источники явно расходятся: backend даёт включающий флаг (true → `all`),
-а снимок Swagger описывает `rf=true` как отбор только runflat-моделей. У `np` и
-`oe` описания в снимке нет вообще: их include-семантика опирается только на код
-и остаётся неподтверждённой вторым источником, а не опровергнутой.
-Конфликт, пробел подтверждения и методика обязательной live-проверки описаны в
-[API knowledge](api-knowledge.md). До проверки имена `include_*`, их описания и
-соответствующие строки этой таблицы считать предварительными и не объявлять ни
-одно поведение подтверждённым. В любом случае это не тот же параметр, что `runflat`
-каталога бренда (true → `T`, только runflat).
+Live-verified flag semantics (2026-09-27): `np`/`oe` are plain include flags —
+`true` widens the result set, `false` matches omission. `rf` is asymmetric:
+omitted applies the upstream default (RunFlat models excluded), `true` adds
+them, and explicit `false` ALSO returns them (upstream variant matching) — it
+is not an exclusion filter. Hence the neutral name `runflat_filter`. This is
+a different parameter from the catalog `runflat` on `tires_list_brand_tires`,
+where `true` means RunFlat-ONLY.
 
-Список `sizes` ищет альтернативы (OR), а не обязательное наличие всех размеров.
-Для комплекта разных размеров подтвердить каждый размер у выбранной модели.
-Размерные поля объединяются на одном исполнении; не выдавать совпадения разных
-исполнений за один подходящий вариант. Параметры с индексами задают точные
-значения; требования «не ниже» нельзя интерпретировать как равенство.
+The `sizes` list searches for alternatives (OR), not the mandatory presence of
+all sizes. For a set of different sizes, confirm each size on the chosen model.
+Size fields are combined on a single variant; do not present matches from
+different variants as one suitable option. Index parameters specify exact
+values; "at least" requirements must not be interpreted as equality.
 
-Сохранять `has_modes`: запрошенный размер → список совпавших обозначений или null.
-Он помогает проверить размер, но не заменяет все проверки исполнения.
+Preserve `has_modes`: requested size → list of matched designations (capped at
+8, `_truncated_sizes` names affected sizes) or null. `{}` means no sizes were
+requested. It helps verify a size but does not replace all variant checks;
+`tires_list_sizes` is the complete-list route.
 
 ## `tires_get_pros_cons`
 
-Обязательны `brand`, `product`. Ответ сохраняет `buy`, `not_buy`, а у аргументов —
-`text`, `prooflink`, `upvotes`. `data: null` означает отсутствие одобренных
-аргументов. `has_bnb_reasons` из карточки позволяет избежать лишнего вызова.
-При необходимости ограничения длинных списков добавить явную навигацию по
-сторонам buy/not_buy; финальную сигнатуру закрепить в inventory и тестах.
+`brand`, `product` are required. Final signature: a common `limit` (1–50,
+default 20) plus **independent** `buy_offset` and `not_buy_offset` (>=0) — each
+side returns `{reasons, total, limit, offset, has_more, next_offset?}` and can
+be advanced on its own; every call returns both sides' slices of the same
+upstream object.
+
+The response preserves per reason: `text` (≤400 chars, `text_truncated` +
+`prooflink` is the full-text citation), `prooflink`, `upvotes`.
+`data: null` upstream maps to `{"buy": null, "not_buy": null}` plus a `note` —
+absent evidence, distinct from two empty lists and never a negative finding.
+`has_bnb_reasons` from the card makes it possible to skip an unnecessary call.
 
 ## `tires_list_materials`
 
-Обязательны `brand`, `product`; `material_type` → `type`:
-article, video, benchmark, link; MCP `limit/offset`.
-Возвращать тип, название, дату, источник и доступное краткое содержание.
-Материал benchmark не обязательно профессиональный тест: тип upstream объединяет
-несколько видов сравнений. Не переименовывать каждый такой материал в pro test.
-Связанные статьи разрешены; общий каталог статей и top-chart tools исключены.
+`brand`, `product` are required; `material_type` → `type`:
+article, video, benchmark, link; MCP `limit`/`offset`.
+Return type, title, date, source and the available summary.
+A benchmark material is not necessarily a professional test: the upstream type
+combines several kinds of comparisons. Do not rename every such material into
+a pro test. Related articles are allowed; the general article catalog and
+top-chart tools are excluded. Cut text is marked (`lead_truncated`,
+`text_truncated`, `tags_list_more`); each material's own link is the
+full-source citation.
 
 ## `tires_list_tests`
 
-`years: list[int] | None` → `year` (1900…текущий год+2),
-`seasons: list[str] | None` → `season`, `automobile_type` (car/suv),
-API `page/per_page`. Ответ: slug, название, год, сезон, тип авто, размер испытания,
-регионы, дата публикации и ссылка.
-Upstream не имеет фильтра списка по размеру, бренду или издателю: не обещать
-поиск полного набора тестов по этим признакам одним вызовом.
+`years` (list[int] | None) → `year` (1900…current year+2),
+`seasons` (list[str] | None) → `season`, `automobile_type` (car/suv),
+API `page`/`per_page`. Response: slug, title, year, season, vehicle type, tested
+size, regions, publication date and link.
+Upstream has no list filter by size, brand or publisher: do not promise a
+search of the full test set by these attributes in a single call.
 
 ## `tires_get_test`
 
-Обязателен `slug`; `sizes: list[str] | None` → `has_mode`, каждое значение не длиннее
-30 символов (`BenchmarkDetailFilterSerializer`; то же `maxLength` есть в снимке).
-MCP `limit/offset` ограничивают только участников, сохраняя общие сведения теста.
-Участник: место, test_score, recommend, вывод, плюсы/минусы и идентичность модели.
-`has_mode` проверяет наличие запрошенного размера у участников; это не фильтр
-размера испытания и не обещание, что все возвращённые участники его имеют.
+`slug` is required; `sizes: list[str] | None` → `has_mode`, each value at most
+30 characters (upstream bound), at most 20 values (MCP-side bound).
+MCP `limit`/`offset` limits only the participants, preserving the general test
+details in a separate `test` header object.
+Participant: place, `test_score` (the test's own scale — never compare across
+tests), recommend, bounded `description` verdict (`description_truncated`),
+`positive_tags`/`negative_tags` (`*_more`) and model identity.
+`has_mode` annotates the presence of the requested size on participants; it is
+not a tested-size filter and does not promise that all returned participants
+have it.
 
 ## `tires_list_regions`
 
-MCP `limit/offset`. Сохранить slug, display, tree_level, countries.
-Использовать справочник TiresVote, включая его иерархию и агрегированные рынки.
+MCP `limit`/`offset`. Preserve slug, display, tree_level, countries.
+`countries` are preserved whole — no per-region detail route exists — so bound
+the response with `limit` under the common response budget.
+Use the TiresVote reference, including its hierarchy and aggregated markets.
 
 ## `tires_list_performance_categories`
 
-MCP `limit/offset`. Сохранить slug, display, season, automobile_type,
-road_conditions, tags и ограниченное описание назначения.
+MCP `limit`/`offset`. Preserve slug, display, season (nullable slug/display for
+season-agnostic categories), automobile_type, road_conditions, tags and the
+full description of intended use. `description`/`tags` are preserved whole —
+no per-category detail route exists; an extreme single category may exceed
+the response budget even at `limit=1` and then errors honestly.

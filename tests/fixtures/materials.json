@@ -1,0 +1,64 @@
+{
+ "data": [
+  {
+   "type": "benchmark",
+   "title": "TireRack.com: Best in Max Performance Summer",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "canonical_link": "https://tiresvote.com/collection/tirerackcom-best-in-max-performance-summer/",
+   "publication_date": "2023-06-20",
+   "product_rank": {
+    "place": 8,
+    "description": "",
+    "positive_tags": [
+     "Dry Traction",
+     "Steering Response",
+     "Corner Stability",
+     "Ride Quality",
+     "Noise",
+     "Wet Traction",
+     "Hydroplaning"
+    ],
+    "negative_tags": []
+   }
+  },
+  {
+   "type": "article",
+   "title": "Test of 245/45 R19 Summer tires (AUTO Straßenverkehr, 8/2022)",
+   "tags_list": [
+    "2022",
+    "auto strassenverkehr",
+    "summer tires"
+   ],
+   "lead": "Modern tires have to meet very high standards: in addition to ensuring excellent wet and dry performance, they must have a long tread life, be safe in corners, and capable of withstanding high speeds.",
+   "image": "https://ws-tires.s3.amazonaws.com/cache/f9/3e/f93e827a05ee842aaa82ea1c06056d40.jpg",
+   "publication_date": "2022-06-28",
+   "canonical_link": "https://tiresvote.com/articles/test-r19-summer-tires-auto-strassenverkehr/"
+  },
+  {
+   "type": "video",
+   "title": "The BEST Performance Tires for your Car in 2021 - Tested and Rated",
+   "video_url": "https://www.youtube.com/watch?v=176LXZFUucc&ab_channel=TyreReviews",
+   "thumbnail": null,
+   "publication_date": "2021-05-09"
+  },
+  {
+   "type": "link",
+   "title": "Example external review page",
+   "url": "https://example.test/reviews/pilot-sport-4",
+   "website": "Example Tire Reviews",
+   "text": "Independent road test notes and measurements.",
+   "thumbnail": null,
+   "publication_date": "2021-03-01"
+  }
+ ],
+ "meta": {
+  "count": 4
+ }
+}

@@ -1,0 +1,52 @@
+{
+ "data": [
+  {
+   "slug": "americas",
+   "display": "Americas",
+   "tree_level": 1,
+   "countries": []
+  },
+  {
+   "slug": "north-america",
+   "display": "North America",
+   "tree_level": 2,
+   "countries": []
+  },
+  {
+   "slug": "usdm",
+   "display": "USA+",
+   "tree_level": 3,
+   "countries": [
+    "United States of America",
+    "Anguilla",
+    "Antigua and Barbuda",
+    "Bahamas",
+    "Barbados",
+    "Bermuda",
+    "Cayman Islands",
+    "Cuba",
+    "Dominica",
+    "Dominican Republic",
+    "Grenada",
+    "Guadeloupe",
+    "Haiti",
+    "Jamaica",
+    "Martinique",
+    "Montserrat",
+    "Puerto Rico",
+    "Saint Barthélemy",
+    "Saint Kitts and Nevis",
+    "Saint Lucia",
+    "Saint Martin (French part)",
+    "Saint Vincent and the Grenadines",
+    "Sint Maarten (Dutch part)",
+    "Turks and Caicos Islands",
+    "Virgin Islands (British)",
+    "Virgin Islands (U.S.)"
+   ]
+  }
+ ],
+ "meta": {
+  "count": 20
+ }
+}

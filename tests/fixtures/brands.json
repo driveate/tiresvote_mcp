@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "slug": "michelin",
+      "display": "Michelin",
+      "price_segment": "Premium",
+      "products_count": 61
+    },
+    {
+      "slug": "kenda",
+      "display": "Kenda",
+      "price_segment": "Mid-Range",
+      "products_count": 24
+    },
+    {
+      "slug": "nankang",
+      "display": "Nankang",
+      "price_segment": "Economy",
+      "products_count": 38
+    },
+    {
+      "slug": "testbrand-unsegmented",
+      "display": "Unsegmented Test Brand",
+      "price_segment": null,
+      "products_count": 3
+    }
+  ],
+  "meta": {"count": 4}
+}

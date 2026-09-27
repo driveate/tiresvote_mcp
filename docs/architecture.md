@@ -1,87 +1,94 @@
-# Архитектура первой версии
+# First-version architecture
 
-Это целевая архитектура; код ещё не создан. Продуктовое решение зафиксировано в
-[ADR-0001](adr/0001-independent-mcp.md), список инструментов — в
-[inventory](tools-inventory.md).
+This describes the implemented v0.1.0 architecture. The product decision is
+recorded in [ADR-0001](adr/0001-independent-mcp.md), the tool list in the
+[inventory](tools-inventory.md), and production evidence in
+[live-validation.md](live-validation.md).
 
-## Структура
+## Structure
 
 ```text
 src/tiresvote_mcp/
   __init__.py
-  server.py             # FastMCP, регистрация, инструкции, CLI, config://status
-  client.py             # HTTP, конфигурация, retry, ошибки, редактирование секретов
-  response.py           # Компактные проекции и два вида пагинации
-  prompts.py            # Четыре самостоятельных сценария TiresVote
+  server.py             # FastMCP, registration, instructions, CLI, config://status
+  client.py             # HTTP, configuration, retry, errors, secret redaction
+  response.py           # Compact projections and two pagination kinds
+  prompts.py            # Four standalone TiresVote scenarios
   tools/
     __init__.py
-    catalog.py          # Бренды, модели, исполнения, регионы, категории (6)
-    search.py           # Текстовый и параметрический поиск (2)
-    evidence.py         # Аргументы, материалы, список и детали тестов (4)
+    catalog.py          # Brands, models, variants, regions, categories (6)
+    search.py           # Text and parametric search (2)
+    evidence.py         # Reasons, materials, test list and details (4)
 tests/
-  fixtures/             # Обезличенные контрактные примеры без ключей
+  fixtures/             # Redacted contract examples without keys
 ```
 
-Python >=3.12, FastMCP и httpx; uv для зависимостей, pytest/pytest-asyncio/respx
-для тестов, Ruff для проверок. При scaffold выбрать совместимые актуальные версии
-и сохранить `uv.lock`. Версии старого проекта — ориентир, а не новый lockfile.
+Python >=3.12, FastMCP and httpx; uv for dependencies (committed `uv.lock`),
+pytest/pytest-asyncio/respx for tests, Ruff for checks.
 
-Интерфейс каждого tool-модуля: `register(mcp)`. Параметры типизированы через
-`Annotated`/`Field`; docstring объясняет назначение, предпосылки и ограничения.
-Тесты проходят через зарегистрированный MCP-интерфейс. Клиент допускает подмену
-HTTP-транспорта и явные настройки без импорта соседних проектов.
+Each tool module exposes `register(mcp)`. Parameters are typed via
+`Annotated`/`Field`; the docstring explains purpose, preconditions and limits.
+Tests go through the registered MCP interface. The client allows substituting
+the HTTP transport and explicit settings without importing neighboring projects.
 
-## Конфигурация
+## Configuration
 
-| Переменная | Назначение / default |
+| Variable | Purpose / default |
 |---|---|
-| `WHEELSIZE_API_KEY` | Ключ владельца, общий с Fitment; добавляется как `user_key` |
-| `TIRES_API_BASE_URL` | `https://api.wheel-size.com`, без `/v2/tires/` |
-| `TIRES_API_HOST_HEADER` | Пусто; override только для явно настроенного локального routing |
+| `WHEELSIZE_API_KEY` | Owner's key, shared with Fitment; sent as `user_key` |
+| `TIRES_API_BASE_URL` | `https://api.wheel-size.com`, without `/v2/tires/` |
+| `TIRES_API_HOST_HEADER` | Empty; override only for explicitly configured local routing |
 
-Путь `/v2/tires/…` задаёт инструмент. Отсутствующий ключ допускается при
-регистрации сервера и в offline-тестах; отказ публичного gateway превращается
-в понятную ошибку настройки. Статус сообщает только наличие ключа, версию и
-безопасный адрес API. Значение ключа никогда не возвращается.
+The `/v2/tires/…` path is set by the tool. A missing key is allowed during
+server registration and in offline tests; a refusal from the public gateway
+turns into a clear configuration error. Status reports only the presence of
+the key, the version and the safe API address. The key value is never returned.
 
-Основной транспорт первой версии — stdio. HTTP-транспорт и удалённый хостинг
-можно добавить отдельной задачей; они не являются условием первого выпуска.
+The first version's primary transport is stdio. HTTP transport and remote
+hosting can be added as a separate task; they are not a first-release
+requirement.
 
-## Разделение ответственности
+## Separation of responsibilities
 
-- HTTP-модуль знает retry, статусы и DRF-ошибки; подсказки ссылаются только на
-  инструменты TiresVote. Для локального теста передаётся собственный Host.
-- Tool-модули переводят понятные параметры MCP в upstream-параметры и выбирают
-  проекцию ответа. Ошибки валидации не запускают скрытый обход всего каталога.
-- Response-модуль сохраняет идентификаторы, ссылки, смысл null и сведения
-  об усечении. Политики пагинации описаны в knowledge-файле.
-- Продукт не зависит от Django, БД TiresVote, пакета `ws_mcp` или соседних checkouts.
-- Дополнительный persistent-cache и общая библиотека двух MCP для v1 не нужны.
+- The HTTP module owns retry, statuses and DRF errors; hints refer only to
+  TiresVote tools. A custom Host is passed for local testing.
+- Tool modules translate plain MCP parameters into upstream parameters and
+  choose the response projection. Validation errors do not trigger a hidden
+  catalog-wide sweep.
+- The response module preserves identifiers, links, null semantics and
+  truncation details. Pagination policies are described in the knowledge file.
+- The product does not depend on Django, the TiresVote DB, the `ws_mcp` package
+  or neighboring checkouts.
+- An extra persistent cache and a shared library for the two MCPs are not
+  needed for v1.
 
-## Сценарии MCP prompts
+## MCP prompt scenarios
 
-| Prompt | Вход | Результат |
+| Prompt | Input | Result |
 |---|---|---|
-| `tire_selection_by_size` | Размер, сезон, рынок, предпочтения | Короткий список моделей с проверенными исполнениями и основаниями |
-| `tire_comparison` | 2–4 модели, размер и критерии | Сравнительная таблица с источниками и пробелами данных |
-| `tire_test_explainer` | Название/slug теста, желаемый размер | Результаты теста и отдельно наличие нужного размера у участников |
-| `tire_model_brief` | Бренд и модель | Характеристики, исполнения, семейство, аргументы и материалы |
+| `tire_selection_by_size` | Size, season, market, preferences | Shortlist of models with verified variants and rationale |
+| `tire_comparison` | 2–4 models, size and criteria | Comparison table with sources and data gaps |
+| `tire_test_explainer` | Test name/slug, desired size | Test results plus the requested size's availability among participants |
+| `tire_model_brief` | Brand and model | Characteristics, variants, family, reasons and materials |
 
-Server instructions содержат краткий выбор цепочки для клиентов без поддержки
-prompts. Поиск разрешает идентификаторы, карточка и размеры проверяют кандидата,
-материалы/тесты обосновывают вывод. Каждый сценарий ограничивает число кандидатов
-и число запросов; дополнительные страницы запрашиваются по потребности задачи.
+Server instructions carry a brief chain selection for clients without prompts
+support. Search resolves identifiers, the model card and sizes verify the
+candidate, materials/tests justify the conclusion. Each scenario bounds the
+number of candidates and requests; additional pages are fetched as the task
+requires.
 
-Если подключён отдельный Wheel-Size MCP, агент может сначала получить fitment.
-Внутренние вызовы другого MCP и обязательная зависимость от его наличия не нужны.
+If a separate Wheel-Size MCP is connected, the agent can fetch fitment first.
+Internal calls into another MCP and a hard dependency on its presence are not
+needed.
 
-## Описание и публикация
+## Description and publication
 
-Все инструменты read-only. Теги отражают catalog/search/evidence. Правила
-использования именно Tires API нужно подтвердить отдельно: правила Fitment нельзя
-объявлять установленным контрактом Tires. До уточнения сценарии рассчитаны на
-запрос пользователя и ограниченную выборку, без фонового массового сбора.
+All tools are read-only. Tags reflect catalog/search/evidence. The usage rules
+for the Tires API specifically must be confirmed separately: Fitment rules must
+not be declared an established Tires contract. Until clarified, scenarios assume
+a user-initiated request and a bounded sample, without background bulk
+collection.
 
-Публичные описания явно различают каталог, свидетельства и fitment. Издательские
-манифесты, CI публикации и remote HTTP deployment создаются отдельной задачей
-после работающего локального сервера.
+Public descriptions explicitly distinguish catalog, evidence and fitment.
+Publishing manifests, release CI and remote HTTP deployment remain follow-up
+tasks outside the local v0.1.0 scope.

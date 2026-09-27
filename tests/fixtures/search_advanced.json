@@ -1,0 +1,341 @@
+{
+ "data": [
+  {
+   "slug": "pilot-sport-4s",
+   "display": "Pilot Sport 4S",
+   "brand": {
+    "slug": "michelin",
+    "display": "Michelin",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/michelin/pilot-sport-4s/",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2017,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 0,
+    "videos": 19,
+    "benchmarks": 27
+   },
+   "regions": [
+    {
+     "slug": "north-america",
+     "display": "North America"
+    },
+    {
+     "slug": "ladm",
+     "display": "Central & South America"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "russia",
+     "display": "Russia+"
+    },
+    {
+     "slug": "jdm",
+     "display": "Japan"
+    },
+    {
+     "slug": "skdm",
+     "display": "South Korea"
+    },
+    {
+     "slug": "sam",
+     "display": "Southeast Asia"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    },
+    {
+     "slug": "africa",
+     "display": "Africa"
+    },
+    {
+     "slug": "audm",
+     "display": "Oceania"
+    }
+   ],
+   "has_modes": {
+    "225/45R17": [
+     "225/45 R17 94Y XL"
+    ],
+    "315/35R20": [
+     "315/35 R20 (110Y) XL"
+    ]
+   },
+   "rating": {
+    "score": 87,
+    "popularity": 68,
+    "tags": [
+     {
+      "slug": "pricequality",
+      "display": "Price/Quality",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "wet-performance",
+      "display": "Wet Performance",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "handling",
+      "display": "Handling",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "dry-performance",
+      "display": "Dry Performance",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "comfort",
+      "display": "Comfort",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "treadwear",
+      "display": "Treadwear",
+      "connotation": "good"
+     },
+     {
+      "slug": "snowice-performance",
+      "display": "Snow/Ice Performance",
+      "connotation": "good"
+     }
+    ]
+   }
+  },
+  {
+   "slug": "pilot-sport-4",
+   "display": "Pilot Sport 4",
+   "brand": {
+    "slug": "michelin",
+    "display": "Michelin",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/michelin/pilot-sport-4/",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2015,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 0,
+    "videos": 7,
+    "benchmarks": 17
+   },
+   "regions": [
+    {
+     "slug": "north-america",
+     "display": "North America"
+    },
+    {
+     "slug": "ladm",
+     "display": "Central & South America"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "russia",
+     "display": "Russia+"
+    },
+    {
+     "slug": "east-asia",
+     "display": "East Asia"
+    },
+    {
+     "slug": "sam",
+     "display": "Southeast Asia"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    },
+    {
+     "slug": "audm",
+     "display": "Oceania"
+    }
+   ],
+   "has_modes": {
+    "225/45R17": [
+     "225/45 R17 (91Y)",
+     "225/45 R17 91V",
+     "225/45 R17 91Y",
+     "225/45 R17 (94Y) XL",
+     "225/45 R17 94W XL",
+     "225/45 R17 94Y XL"
+    ],
+    "315/35R20": [
+     "315/35 R20 (110Y) XL",
+     "315/35 R20 110Y XL"
+    ]
+   },
+   "rating": {
+    "score": 76,
+    "popularity": 63,
+    "tags": [
+     {
+      "slug": "pricequality",
+      "display": "Price/Quality",
+      "connotation": "good"
+     },
+     {
+      "slug": "dry-performance",
+      "display": "Dry Performance",
+      "connotation": "good"
+     },
+     {
+      "slug": "treadwear",
+      "display": "Treadwear",
+      "connotation": "good"
+     },
+     {
+      "slug": "wet-performance",
+      "display": "Wet Performance",
+      "connotation": "good"
+     },
+     {
+      "slug": "handling",
+      "display": "Handling",
+      "connotation": "good"
+     },
+     {
+      "slug": "comfort",
+      "display": "Comfort",
+      "connotation": "acceptable"
+     }
+    ]
+   }
+  },
+  {
+   "slug": "primacy-4plus",
+   "display": "Primacy 4+",
+   "brand": {
+    "slug": "michelin",
+    "display": "Michelin",
+    "price_segment": "Premium"
+   },
+   "canonical_link": "https://tiresvote.com/catalog/michelin/primacy-4plus/",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "year": 2022,
+   "discontinued": false,
+   "almost_discontinued": false,
+   "coming_soon": false,
+   "is_runflat": false,
+   "counters": {
+    "modes": 0,
+    "videos": 1,
+    "benchmarks": 16
+   },
+   "regions": [
+    {
+     "slug": "mxndm",
+     "display": "Mexico"
+    },
+    {
+     "slug": "ladm",
+     "display": "Central & South America"
+    },
+    {
+     "slug": "eudm",
+     "display": "Europe"
+    },
+    {
+     "slug": "russia",
+     "display": "Russia+"
+    },
+    {
+     "slug": "jdm",
+     "display": "Japan"
+    },
+    {
+     "slug": "medm",
+     "display": "Middle East"
+    }
+   ],
+   "has_modes": {
+    "225/45R17": [
+     "225/45 R17 91V",
+     "225/45 R17 91W",
+     "225/45 R17 91Y",
+     "225/45 R17 94V XL",
+     "225/45 R17 94W XL"
+    ],
+    "315/35R20": null
+   },
+   "rating": {
+    "score": 87,
+    "popularity": 58,
+    "tags": [
+     {
+      "slug": "comfort",
+      "display": "Comfort",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "handling",
+      "display": "Handling",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "pricequality",
+      "display": "Price/Quality",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "dry-performance",
+      "display": "Dry Performance",
+      "connotation": "excellent"
+     },
+     {
+      "slug": "wet-performance",
+      "display": "Wet Performance",
+      "connotation": "excellent"
+     }
+    ]
+   }
+  }
+ ],
+ "meta": {
+  "pagination": {
+   "current_page_count": 5,
+   "total_items": 17,
+   "total_pages": 4,
+   "first": "https://api.wheel-size.com/v2/tires/search/advanced/?b=michelin&s=summer&t=225%2F45R17&t=315%2F35R20&per_page=5&page=1",
+   "prev": null,
+   "next": "https://api.wheel-size.com/v2/tires/search/advanced/?b=michelin&s=summer&t=225%2F45R17&t=315%2F35R20&per_page=5&page=2",
+   "last": "https://api.wheel-size.com/v2/tires/search/advanced/?b=michelin&s=summer&t=225%2F45R17&t=315%2F35R20&per_page=5&page=4"
+  }
+ }
+}

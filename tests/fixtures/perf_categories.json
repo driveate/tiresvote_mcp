@@ -1,0 +1,70 @@
+{
+ "data": [
+  {
+   "slug": "suv-on-off-road-commercial-traction",
+   "display": "Commercial",
+   "season": {
+    "slug": null,
+    "display": null
+   },
+   "automobile_type": {
+    "slug": "suv",
+    "display": "Light Truck / SUV"
+   },
+   "road_conditions": "Off‑road",
+   "tags": [
+    "higher load rating",
+    "reduced off-road capacity",
+    "designed for companies that need tires to last",
+    "stiffer compound"
+   ],
+   "description": "Most commercial truck tires are specially designed for increased stability and long-distance driving. Moreover, many offer traction performance for all-weather conditions, including rain, snow, ice, and hot & dry roads."
+  },
+  {
+   "slug": "suv-crossoversuv-touring-all-season",
+   "display": "Crossover/SUV Touring All-Season",
+   "season": {
+    "slug": "all",
+    "display": "All Season"
+   },
+   "automobile_type": {
+    "slug": "suv",
+    "display": "Light Truck / SUV"
+   },
+   "road_conditions": null,
+   "tags": [
+    "sophisticated blend of fashion and function",
+    "all-season on-road traction",
+    "noise comfort",
+    "stylish appearance"
+   ],
+   "description": "Sport truck tires are designed to provide style and performance, while offering handling and a smooth, quite ride in an all season tire. Popular on pickup trucks, sport utility vehicles and crossovers, performance sport truck tires have a wide design with a low profile, and come in sizes to fit larger diameter rims.\r\n\r\nThese tires combine the sporty appearance of Street/Sport Truck tires with much of the ride quality and noise comfort associated with Highway All-Season tires to deliver a sophisticated blend of fashion and function. While they offer all-season versatility, including traction in light snow, tire sizes featuring extremely wide tread widths may limit the traction this type of tire can provide in deep snow."
+  },
+  {
+   "slug": "car-extreme-performance-summer",
+   "display": "Extreme Performance Summer",
+   "season": {
+    "slug": "summer",
+    "display": "Summer"
+   },
+   "automobile_type": {
+    "slug": "car",
+    "display": "Passenger"
+   },
+   "road_conditions": null,
+   "tags": [
+    "for serious driving challenges",
+    "great handling",
+    "W or Y speed rated (270-300km/h)",
+    "for exotic sport cars",
+    "for competition-level performance",
+    "minimal level of comfort",
+    "not for everyday driving"
+   ],
+   "description": "Extreme-performance tires offer the highest level of street performance. What they lack in comfort and wet condition handling, they more than make up for with maximum dry-grip performance. While these are not specifically track tires, they are best used in situations where competition-level performance is needed. Using them for everyday short-trip driving is like using dynamite to kill flies."
+  }
+ ],
+ "meta": {
+  "count": 26
+ }
+}

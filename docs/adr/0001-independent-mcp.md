@@ -1,15 +1,17 @@
-# Самостоятельный TiresVote MCP
+# Independent TiresVote MCP
 
-Принято владельцем продукта 2026-09-27. TiresVote — дополнительный продукт,
-которому нужны независимые установка, развитие и релизы. Создаём отдельный
-репозиторий `tiresvote_mcp` и пакет `tiresvote-mcp` вместо добавления каталога шин
-в `wheel-size-mcp`; первый выпуск включает 12 инструментов из inventory.
+Accepted by the product owner on 2026-09-27. TiresVote is an additional product
+that needs independent installation, development and releases. We are creating
+a separate `tiresvote_mcp` repository and a `tiresvote-mcp` package instead of
+adding a tire catalog to `wheel-size-mcp`; the first release includes the 12
+tools from the inventory.
 
-Разделение только по Python-модулям внутри прежнего сервера оставило бы общий
-список инструментов, конфигурацию и цикл выпусков. Поэтому процессы независимы,
-а общий пользовательский сценарий выполняет агент, подключивший оба MCP.
+Splitting only by Python modules inside the previous server would have kept a
+shared tool list, configuration and release cycle. Therefore the processes are
+independent, and the shared user scenario is performed by an agent that has
+connected both MCPs.
 
-Оба продукта используют один `WHEELSIZE_API_KEY`, что подтверждено владельцем.
-Это не создаёт зависимости одного сервера от другого. Небольшой HTTP-транспорт
-можно адаптировать из существующего проекта с сохранением его лицензионных
-уведомлений; общий пакет сейчас не вводим.
+Both products use a single `WHEELSIZE_API_KEY`, confirmed by the owner.
+This creates no dependency of one server on the other. The small HTTP transport
+can be adapted from the existing project while preserving its license notices;
+we are not introducing a shared package at this time.
