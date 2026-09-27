@@ -13,8 +13,12 @@ venv/
 .env.*
 !.env.example
 .mcp.json
-.claude/
 .codex/
+# .claude/ stays ignored except the repository-local publish skill
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/publish/
 
 # Tool output
 .pytest_cache/

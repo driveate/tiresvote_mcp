@@ -69,3 +69,5 @@ there:
   key is set.
 - Report skipped live checks separately and update documentation to
   describe the implemented state.
+- PyPI release workflow (only on an explicit release request):
+  `.claude/skills/publish/`.
